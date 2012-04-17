@@ -30,15 +30,15 @@
 #include "Generator/CopyGenerator.h"
 
 static struct option options[] = {
-    {"existing_dataset_folder", 	required_argument, 	0, 'e'},
-    {"generated_dataset_folder", 	required_argument, 	0, 'g'},
-    {"noise-num", 					required_argument, 	0, 'n'},
-    {"noise-variance",				required_argument, 	0, 'v'},
-    {"perspective-num", 			required_argument, 	0, 'p'},
-    {"perspective-variance",		required_argument, 	0, 's'},
-    {"blur-num", 					required_argument, 	0, 'b'},
-    {"blur-radius", 				required_argument, 	0, 'r'},
-    {0, 							0, 					0, 	0}
+    {"existing_dataset_folder", required_argument, 0, 'e'},
+    {"generated_dataset_folder", required_argument, 0, 'g'},
+    {"noise-num", required_argument, 0, 'n'},
+    {"noise-variance", required_argument, 0, 'v'},
+    {"perspective-num", required_argument, 0, 'p'},
+    {"perspective-variance", required_argument, 0, 's'},
+    {"blur-num", required_argument, 0, 'b'},
+    {"blur-radius", required_argument, 0, 'r'},
+    {0, 0,  0, 0}
 };
 
 static void help() {
@@ -86,7 +86,8 @@ int main(int argc, char* argv[]) {
 	int optionIndex = 0;
 	char argument;
 
-	while ((argument = getopt_long(argc, argv, "e:g:n:v:p:s:b:r:", options, &optionIndex)) > -1) {
+	while ((argument = getopt_long(
+			argc, argv, "e:g:n:v:p:s:b:r:", options, &optionIndex)) > -1) {
 		switch (argument) {
 			case 'e':
 				existingDatasetFolder = optarg;
@@ -146,7 +147,8 @@ int main(int argc, char* argv[]) {
 	}
 
 	/** Remove existing dataset in generated dataset folder */
-	std::string genDatasetFilename = mv::IO::appendFilenameToFolderPath(generatedDatasetFolder, mv::Marker::DATASET_FILENAME_EXTENSION);
+	std::string genDatasetFilename = mv::IO::appendFilenameToFolderPath(
+			generatedDatasetFolder, mv::Marker::DATASET_FILENAME_EXTENSION);
 	remove(genDatasetFilename.c_str());
 
 	/** Create generator chain */

@@ -41,9 +41,16 @@ inline static void perspectiveTranform(const std::vector<cv::Point>& originalPoi
 	for (unsigned int i = 0; i < originalPoints.size(); i++) {
 		int x = originalPoints[i].x;
 		int y = originalPoints[i].y;
-		float xet = transformMatrix.at<float>(0, 0) * x + transformMatrix.at<float>(0, 1) * y + transformMatrix.at<float>(0, 2);
-		float xdt = transformMatrix.at<float>(2, 0) * x + transformMatrix.at<float>(2, 1) * y + transformMatrix.at<float>(2, 2);
-		float yet = transformMatrix.at<float>(1, 0) * x + transformMatrix.at<float>(1, 1) * y + transformMatrix.at<float>(1, 2);
+		float xet = transformMatrix.at<float>(0, 0) * x +
+				transformMatrix.at<float>(0, 1) * y +
+				transformMatrix.at<float>(0, 2);
+		float xdt = transformMatrix.at<float>(2, 0) * x +
+				transformMatrix.at<float>(2, 1) * y +
+				transformMatrix.at<float>(2, 2);
+		float yet = transformMatrix.at<float>(1, 0) * x +
+				transformMatrix.at<float>(1, 1) * y +
+				transformMatrix.at<float>(1, 2);
+
 		if (fabs(xdt) > 0.0001) {
 			transformedPoints.push_back(cv::Point(xet / xdt, yet / xdt));
 		} else {
