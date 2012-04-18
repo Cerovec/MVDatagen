@@ -28,6 +28,7 @@
 #include "Generator/BlurGenerator.h"
 #include "Generator/PerspectiveGenerator.h"
 #include "Generator/CopyGenerator.h"
+#include "Generator/FlipGenerator.h"
 
 static struct option options[] = {
     {"existing_dataset_folder", required_argument, 0, 'e'},
@@ -38,6 +39,7 @@ static struct option options[] = {
     {"perspective-variance", required_argument, 0, 's'},
     {"blur-num", required_argument, 0, 'b'},
     {"blur-radius", required_argument, 0, 'r'},
+    {"flip", required_argument, 0, 'f'},
     {0, 0,  0, 0}
 };
 
@@ -65,7 +67,8 @@ static void help() {
 		"\t-p(value) (e.g. -p8) creates 8 perspective transformed images for each original image. Default is 10.\n"
 		"\t-s(value) (e.g. -s5) variance of perspective. Default is 10.\n"
 		"\t-b(value) (e.g. -b6) creates 6 blurred images for each original image. Default is 5.\n"
-		"\t-r(value) (e.g. -r3 ) radius of blur. Default is 3.\n"
+		"\t-r(value) (e.g. -r3) radius of blur. Default is 3.\n"
+		"\t-f(value) (e.g. -f1) Generate flipped image. Default is 1 (true).\n"
 		);
 	exit(EXIT_FAILURE);
 }
@@ -86,8 +89,10 @@ int main(int argc, char* argv[]) {
 	int optionIndex = 0;
 	char argument;
 
+	bool flipNum = 1;
+
 	while ((argument = getopt_long(
-			argc, argv, "e:g:n:v:p:s:b:r:", options, &optionIndex)) > -1) {
+			argc, argv, "e:g:n:v:p:s:b:r:f:", options, &optionIndex)) > -1) {
 		switch (argument) {
 			case 'e':
 				existingDatasetFolder = optarg;
@@ -103,9 +108,6 @@ int main(int argc, char* argv[]) {
 				break;
 			case 'p':
 				perspectiveNum = atoi(optarg);
-				if (perspectiveNum < 1) {
-					help();
-				}
 				break;
 			case 's':
 				perspectiveVariance = atoi(optarg);
@@ -115,6 +117,9 @@ int main(int argc, char* argv[]) {
 				break;
 			case 'r':
 				blurRadius = atoi(optarg);
+				break;
+			case 'f':
+				flipNum = atoi(optarg);
 				break;
 			default:
 				help();
@@ -154,6 +159,8 @@ int main(int argc, char* argv[]) {
 	/** Create generator chain */
 	mv::CopyGenerator copyGenerator(
 			existingDatasetFolder, generatedDatasetFolder);
+	mv::FlipGenerator flipGenerator(
+			generatedDatasetFolder, generatedDatasetFolder, flipNum);
 	mv::PerspectiveGenerator perspectiveGenerator(
 			generatedDatasetFolder, generatedDatasetFolder, perspectiveNum, perspectiveVariance);
 	mv::BlurGenerator blurGenerator(
@@ -161,7 +168,8 @@ int main(int argc, char* argv[]) {
 	mv::NoiseGenerator noiseGenerator(
 			generatedDatasetFolder, generatedDatasetFolder, noiseNum, noiseVariance);
 
-	copyGenerator.setNext(&perspectiveGenerator);
+	copyGenerator.setNext(&flipGenerator);
+	flipGenerator.setNext(&perspectiveGenerator);
 	perspectiveGenerator.setNext(&blurGenerator);
 	blurGenerator.setNext(&noiseGenerator);
 

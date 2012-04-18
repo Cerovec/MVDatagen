@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * CopyGenerator.cpp
+ * FlipGenerator.cpp
  *
- *  Created on: Apr 17, 2012
+ *  Created on: Apr 18, 2012
  *      Author: cerovec
  */
 
@@ -18,29 +18,39 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "CopyGenerator.h"
-#include "Utils/IO.h"
+#include "FlipGenerator.h"
+#include <opencv2/opencv.hpp>
 
 namespace mv {
 
-std::string CopyGenerator::getGeneratorName() const {
-	return "cp";
+std::string FlipGenerator::getGeneratorName() const {
+	return "flip";
 }
 
-void CopyGenerator::generateSample(const ImageData& originalSample,
+void FlipGenerator::generateSample(const ImageData& originalSample,
 		ImageData& generatedSample, std::string& generatedFilename) const {
 
-	printf("Generating copied image %s.\n", generatedFilename.c_str());
+	printf("Generating flipped image %s.\n", generatedFilename.c_str());
 
 	cv::Mat originalImage;
 	IO::loadImageFromFile(originalImage,
 			IO::appendFilenameToFolderPath(startingResultsFolder_, originalSample.filename_).c_str());
 
 	generatedSample.filename_ = generatedFilename;
-	generatedSample.points_ = originalSample.points_;
 	generatedSample.marks_ = originalSample.marks_;
 
-	IO::saveImageToFile(originalImage,
+	cv::Mat generatedImage;
+	cv::flip(originalImage, generatedImage, -1);
+
+	std::vector<cv::Point> newPoints;
+	for (unsigned int i = 0; i < originalSample.points_.size(); i++) {
+		cv::Point point = originalSample.points_[i];
+		newPoints.push_back(cv::Point(originalImage.cols - 1 - point.x, originalImage.rows - 1 - point.y));
+	}
+
+	generatedSample.points_ = newPoints;
+
+	IO::saveImageToFile(generatedImage,
 			IO::appendFilenameToFolderPath(generatedResultsFolder_, generatedFilename).c_str());
 }
 

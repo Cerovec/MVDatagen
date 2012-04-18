@@ -31,7 +31,7 @@ std::string PerspectiveGenerator::getGeneratorName() const {
 void PerspectiveGenerator::generateSample(const ImageData& originalSample,
 		ImageData& generatedSample, std::string& generatedFilename) const {
 
-	printf("Generating image %s. ", generatedFilename.c_str());
+	printf("Generating image %s.\n", generatedFilename.c_str());
 
 	cv::Mat originalImage;
 	IO::loadImageFromFile(originalImage,
@@ -39,7 +39,6 @@ void PerspectiveGenerator::generateSample(const ImageData& originalSample,
 
 	double variance;
 	variance = fabs(RNG.gaussian(perspectiveVariance_));
-	printf("Perspective variance is: %lf\n", variance);
 
 	cv::Mat generatedImage;
 

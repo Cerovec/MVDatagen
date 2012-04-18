@@ -47,7 +47,7 @@ std::string Generator::createFilename(const std::string& originalFilename,
 }
 
 void Generator::generateSamplesInDataset(const Dataset& original, Dataset& generated) const {
-	printf("Generating dataset..\n");
+	printf("Generating %s dataset..\n", getGeneratorName().c_str());
 
 	for (unsigned int i = 0; i < original.dataset_.size(); i++) {
 		cv::Mat image;

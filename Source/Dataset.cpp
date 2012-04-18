@@ -127,8 +127,6 @@ void ImageData::deserialize(std::istream& stream) {
 			}
 		}
 	}
-
-	print();
 }
 
 Dataset::Dataset() {

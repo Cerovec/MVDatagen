@@ -64,6 +64,9 @@ inline static bool arePointsInside(const std::vector<cv::Point>& points, const c
 		if (points[i].x >= imageSize.width || points[i].y >= imageSize.height) {
 			return false;
 		}
+		if (points[i].x < 0 || points[i].y < 0) {
+			return false;
+		}
 	}
 	return true;
 }
