@@ -176,10 +176,6 @@ int main(int argc, char* argv[]) {
 	/** Generate dataset */
 	copyGenerator.generateDataset();
 
-	mv::Dataset dataset;
-	dataset.deserialize(genDatasetFilename.c_str());
-	dataset.display(generatedDatasetFolder);
-
 	return EXIT_SUCCESS;
 }
 
