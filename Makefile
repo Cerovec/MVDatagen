@@ -1,50 +1,104 @@
-CC := ccache g++
+#-------------------------------------------------------------------------------
+# TOOLS
+#-------------------------------------------------------------------------------
+
+# Compiler
+CXX := ccache g++
+
+# Linker
 LD := g++
-RM := rm -rf
+
+# Removing files
+RM := @rm -rf
+
+# Shell
 SHELL := /bin/bash
 
-OBJECTS_DIR := Objects
-SOURCE_DIR := Source
+#-------------------------------------------------------------------------------
+# BUILD OPTIONS
+#-------------------------------------------------------------------------------
 
-CFLAGS := -O0 -Wall -DDEBUG -DIMSHOW
-LDFLAGS := -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc 
-INCLUDES := -I$(SOURCE_DIR) -I/usr/local/include
-
-SOURCES := $(wildcard $(SOURCE_DIR)/*.cpp) $(wildcard $(SOURCE_DIR)/*/*.cpp) $(wildcard $(SOURCE_DIR)/*/*/*.cpp)
-OBJECTS := $(SOURCES:.cpp=.o)
-OBJECTS := $(subst $(SOURCE_DIR), $(OBJECTS_DIR), $(OBJECTS))
-DEPENDENCIES := $(OBJECTS:.o=.d)
-DIRS_CREATED := $(OBJECTS_DIR)/.null
-
+# Executable name
 EXECUTABLE := MVDatagen
+
+# Source root folder
+SOURCEROOT = Source
+
+# Directories with sources
+SOURCEDIRS = $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURCEROOT)/Utils
+
+# Intermediate and output files are placed into BUILDDIR
+BUILDDIR = Build
+
+# Defined macros
+MACROS := DEBUG IMSHOW
+
+# Include folders
+INCLUDES := $(SOURCEROOT) /usr/local/include
+
+# Additional compiler flags
+CXXFLAGS := -O0 -Wall
+
+# Library search folders
+LDPATHS := /usr/local/lib
+
+# Libraries linked
+LIBS := opencv_core opencv_highgui opencv_imgproc
+
+# Additional linker flags
+LDFLAGS := 
+
+#-------------------------------------------------------------------------------
+# HELPER VARIABLES
+#-------------------------------------------------------------------------------
+
+# Dummy file that marks created build directories
+DIRS_CREATED := $(BUILDDIR)/.null
+
+# Finds all source files in source directories
+SOURCES := $(foreach DIR, $(SOURCEDIRS), $(wildcard $(DIR)/*.cpp))
+
+# Calculates the object file for every source file
+OBJECTS := $(addprefix $(BUILDDIR)/, $(SOURCES:.cpp=.o))
+
+# Calculates the dependency file for every source file
+DEPENDENCIES := $(OBJECTS:.o=.d)
+
+#-------------------------------------------------------------------------------
+# RULES
+#-------------------------------------------------------------------------------
+
+all: $(EXECUTABLE)
     
 $(EXECUTABLE): $(OBJECTS)
-	@echo 'Building target: $@'
-	@echo 'Invoking: $(LD) Linker'
-	$(LD) $(OBJECTS) -o $@ $(LDFLAGS)
-	@echo 'Finished building target: $@'
+	@echo '[Building target: $@]'
+	@echo '[Invoking: $(LD) Linker]'
+	$(LD) $(LDFLAGS) $(OBJECTS) -o $@ \
+		$(foreach LIB, $(LIBS), -l $(LIB)) \
+		$(foreach LDPATH, $(LDPATHS), -L $(LDPATH))
+	@echo '[Finished building target: $@]'
 	@echo ' '
 	
 $(DIRS_CREATED):
-	@echo 'Creating dirs' 
-	@mkdir -p $(OBJECTS_DIR)
+	@echo '[Creating dirs]' 
+	@mkdir -p $(BUILDDIR)
 	@touch $(DIRS_CREATED)
-	@echo 'Finished creating dirs'
+	@echo '[Finished creating dirs]'
 
-$(OBJECTS_DIR)/%.o: $(SOURCE_DIR)/%.cpp $(DIRS_CREATED)
-	@echo 'Building target: $@'
-	@echo 'Invoking: $(CC) Compiler'
-	@echo $(OBJECTS)
+$(BUILDDIR)/%.o: %.cpp $(DIRS_CREATED)
+	@echo '[Compiling file: $<]'
+	@echo '[Invoking: $(CXX) Compiler]'
 	@mkdir -p $(@D)
-	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
-	@echo 'Finished building target: $@'
+	$(CXX) $(CXXFLAGS) -MMD -c $< -o $@ \
+		$(foreach INC, $(INCLUDES), -I $(INC)) \
+		$(foreach MACRO, $(MACROS), -D $(MACRO))
+	@echo '[Finished compiling: $<]'
 	@echo ' '
-
-all: $(EXECUTABLE)
 	
 .PHONY : clean
 clean:
-	@echo 'Cleaning target'
-	@$(RM) $(OBJECTS_DIR) $(EXECUTABLE)
-	@echo 'Finished cleaning'
-	@echo ' '
+	@echo '[Cleaning...]'
+	$(RM) $(BUILDDIR) $(EXECUTABLE)
+	@echo '[Finished]'
+	
+-include $(DEPENDENCIES)
