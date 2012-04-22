@@ -11,9 +11,7 @@ The project solves two problems:
 
 The project uses OpenCV for image IO and geometry transformations.
 
-Project can be compiled using:
-    
-    g++ -lopencv_core -lopencv_highgui -lopencv_imgproc -I. Main.cpp Dataset.cpp Utils/IO.cpp Marker/Marker.cpp Generator/Generator.cpp Generator/NoiseGenerator.cpp Generator/CopyGenerator.cpp Generator/FlipGenerator.cpp Generator/PerspectiveGenerator.cpp Generator/BlurGenerator.cpp -o ./MVDatagen
+Project can be compiled using the supplied Makefile. Modify it to suit your needs.
 
 ## Usage
 

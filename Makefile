@@ -2,16 +2,9 @@
 # TOOLS
 #-------------------------------------------------------------------------------
 
-# Compiler
 CXX := ccache g++
-
-# Linker
 LD := g++
-
-# Removing files
 RM := @rm -rf
-
-# Shell
 SHELL := /bin/bash
 
 #-------------------------------------------------------------------------------
@@ -22,13 +15,13 @@ SHELL := /bin/bash
 EXECUTABLE := MVDatagen
 
 # Source root folder
-SOURCEROOT = Source
+SOURCEROOT := Source
 
 # Directories with sources
-SOURCEDIRS = $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURCEROOT)/Utils
+SOURCEDIRS := $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURCEROOT)/Utils
 
 # Intermediate and output files are placed into BUILDDIR
-BUILDDIR = Build
+BUILDDIR := Build
 
 # Defined macros
 MACROS := DEBUG IMSHOW
