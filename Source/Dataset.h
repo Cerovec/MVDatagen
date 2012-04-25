@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include <opencv2/opencv.hpp>
+#include <stdio.h>
 
 namespace mv {
 /**
