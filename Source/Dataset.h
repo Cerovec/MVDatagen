@@ -26,7 +26,6 @@
 #include <opencv2/opencv.hpp>
 
 namespace mv {
-
 /**
  * Represents marked data for one image
  */
