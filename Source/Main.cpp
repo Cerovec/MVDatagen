@@ -21,105 +21,63 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-#include "Dataset.h"
-#include "Marker/Marker.h"
-#include "Utils/IO.h"
-#include "Generator/NoiseGenerator.h"
-#include "Generator/BlurGenerator.h"
-#include "Generator/PerspectiveGenerator.h"
-#include "Generator/CopyGenerator.h"
-#include "Generator/FlipGenerator.h"
+#include "Marker.h"
+#include "NoiseGenerator.h"
 
 static struct option options[] = {
-    {"existing_dataset_folder", required_argument, 0, 'e'},
-    {"generated_dataset_folder", required_argument, 0, 'g'},
-    {"noise-num", required_argument, 0, 'n'},
-    {"noise-variance", required_argument, 0, 'v'},
-    {"perspective-num", required_argument, 0, 'p'},
-    {"perspective-variance", required_argument, 0, 's'},
-    {"blur-num", required_argument, 0, 'b'},
-    {"blur-radius", required_argument, 0, 'r'},
-    {"flip", required_argument, 0, 'f'},
-    {0, 0,  0, 0}
+    {"existing_dataset_folder", 	required_argument, 	0, 'e'},
+    {"generated_dataset_folder", 	required_argument, 	0, 'g'},
+    {"noise-num", 					required_argument, 	0, 'n'},
+    {"noise-variance",				required_argument, 	0, 'v'},
+    {"perspective-num", 			required_argument, 	0, 'p'},
+    {"perspective-variance",		required_argument, 	0, 's'},
+    {"blur-num", 					required_argument, 	0, 'b'},
+    {"blur-radius", 				required_argument, 	0, 'r'},
+    {0, 							0, 					0, 	0}
 };
 
 static void help() {
 	printf(
 		"\n"
 		"Use the command as follows:\n"
-		"./MVDatagen -e <existing_dataset_folder> -g <generated_dataset_folder>\n"
+		"./MVDatagen -d <existing_dataset_folder> -g <generated_dataset_folder>\n"
 		"\n"
 		"For the first use, locate the folder with your images and decide where you want your generated images to be placed.\n"
-		"Then use: ./MVDatagen -e <existingImagesFolder> -g <generatedImagesFolder>\n"
+		"Then use: ./MVDatagen -d <existingImagesFolder> -g <generatedImagesFolder>\n"
 		"This will place the generated images in <generatedImagesFolder>, and also create two files "
 		"<existingImagesFolder>/dataset.txt and <generatedImagesFolder>/dataset.txt. These contain descriptions of the datasets.\n"
 		"The file it will serve as the basis for generation of test samples.\n"
 		"\n"
-		"If MVDatagen finds the existing file <existingImages>/dataset.txt, the marking process will "
-		"be skipped, and you will see the appropriate message. "
+		"If MVDatagen finds the existing file <existingImages>/dataset.txt, the marking process will be skipped, and you will see the appropriate message. "
 		"<existingImages>/dataset.txt will then serve as the basis for generation process. "
-		"Also, if the <generated_dataset_folder>/dataset.txt does exist, the "
-		"generating process will be skipped and you will see the appropriate message.\n"
-		"\n"
-		"Additional options are:\n"
-		"\t-n(value) (e.g. -n10) creates 10 noised images for each original image. Default is 5. Must be greater than 0.\n"
-		"\t-v(value) (e.g. -v6) variance of noise. Default is 10.\n"
-		"\t-p(value) (e.g. -p8) creates 8 perspective transformed images for each original image. Default is 10.\n"
-		"\t-s(value) (e.g. -s5) variance of perspective. Default is 10.\n"
-		"\t-b(value) (e.g. -b6) creates 6 blurred images for each original image. Default is 5.\n"
-		"\t-r(value) (e.g. -r3) radius of blur. Default is 3.\n"
-		"\t-f(value) (e.g. -f1) Generate flipped image. Default is 1 (true).\n"
+		"Also, if the <generated_dataset_folder>/dataset.txt does exist, the generating process will be skipped and you will see the appropriate message."
 		);
 	exit(EXIT_FAILURE);
 }
 
 int main(int argc, char* argv[]) {
-	char* existingDatasetFolder = NULL;
-	char* generatedDatasetFolder = NULL;
+	char* existingDatasetFilename = NULL;
+	char* generatedDatasetFilename = NULL;
 
-	int noiseNum = 3;
-	int noiseVariance = 10;
+	int noiseNum = 0;
+	double noiseVariance = 0;
 
-	int blurNum = 3;
-	int blurRadius = 3;
+	int blurNum = 0;
+	double blurVariance = 0;
 
-	int perspectiveNum = 3;
-	int perspectiveVariance = 5;
+	int perspectiveNum = 0;
+	int perspectiveVariance = 0;
 
 	int optionIndex = 0;
 	char argument;
 
-	bool flipNum = 1;
-
-	while ((argument = getopt_long(
-			argc, argv, "e:g:n:v:p:s:b:r:f:", options, &optionIndex)) > -1) {
+	while ((argument = getopt_long(argc, argv, "e:g:", options, &optionIndex)) > -1) {
 		switch (argument) {
 			case 'e':
-				existingDatasetFolder = optarg;
+				existingDatasetFilename = optarg;
 				break;
 			case 'g':
-				generatedDatasetFolder = optarg;
-				break;
-			case 'n':
-				noiseNum = atoi(optarg);
-				break;
-			case 'v':
-				noiseVariance = atoi(optarg);
-				break;
-			case 'p':
-				perspectiveNum = atoi(optarg);
-				break;
-			case 's':
-				perspectiveVariance = atoi(optarg);
-				break;
-			case 'b':
-				blurNum = atoi(optarg);
-				break;
-			case 'r':
-				blurRadius = atoi(optarg);
-				break;
-			case 'f':
-				flipNum = atoi(optarg);
+				generatedDatasetFilename = optarg;
 				break;
 			default:
 				help();
@@ -127,54 +85,30 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	/** check if folder names are present */
-	if (existingDatasetFolder == NULL ||  generatedDatasetFolder == NULL) {
+	if (existingDatasetFilename == NULL ||  generatedDatasetFilename == NULL) {
 		help();
 	}
 
-	/** trim folder names */
-	size_t startingLength = strlen(existingDatasetFolder);
-	if (existingDatasetFolder[startingLength - 1] == '/') {
-		existingDatasetFolder[startingLength - 1] = 0;
-	}
-	size_t generatedLength = strlen(generatedDatasetFolder);
-	if (generatedDatasetFolder[generatedLength - 1] == '/') {
-		generatedDatasetFolder[generatedLength - 1] = 0;
-	}
+	/**
+	 * Mark the original images, if needed
+	 */
+	mv::Marker marker(existingDatasetFilename);
+	marker.markDataset();
 
-	/** Mark the original images if dataset doesn't exist */
-	mv::Marker marker(existingDatasetFolder);
-	if (!marker.datasetExists()) {
-		printf("Marking dataset for \"%s\"...\n", existingDatasetFolder);
-		marker.markDataset();
-	} else {
-		printf("Dataset for images at \"%s\" already exists...\n", existingDatasetFolder);
-	}
+	/**
+	 * Create generator chain
+	 */
+	mv::NoiseGenerator noiseGenerator(existingDatasetFilename, generatedDatasetFilename, noiseNum, noiseVariance);
+	mv::NoiseGenerator blurGenerator(existingDatasetFilename, generatedDatasetFilename, blurNum, blurVariance);
+	mv::NoiseGenerator perspectiveGenerator(existingDatasetFilename, generatedDatasetFilename, perspectiveNum, perspectiveVariance);
 
-	/** Remove existing dataset in generated dataset folder */
-	std::string genDatasetFilename = mv::IO::appendFilenameToFolderPath(
-			generatedDatasetFolder, mv::Marker::DATASET_FILENAME_EXTENSION);
-	remove(genDatasetFilename.c_str());
+	noiseGenerator.setNext(&blurGenerator);
+	blurGenerator.setNext(&perspectiveGenerator);
 
-	/** Create generator chain */
-	mv::CopyGenerator copyGenerator(
-			existingDatasetFolder, generatedDatasetFolder);
-	mv::FlipGenerator flipGenerator(
-			generatedDatasetFolder, generatedDatasetFolder, flipNum);
-	mv::PerspectiveGenerator perspectiveGenerator(
-			generatedDatasetFolder, generatedDatasetFolder, perspectiveNum, perspectiveVariance);
-	mv::BlurGenerator blurGenerator(
-			generatedDatasetFolder, generatedDatasetFolder, blurNum, blurRadius);
-	mv::NoiseGenerator noiseGenerator(
-			generatedDatasetFolder, generatedDatasetFolder, noiseNum, noiseVariance);
-
-	copyGenerator.setNext(&flipGenerator);
-	flipGenerator.setNext(&perspectiveGenerator);
-	perspectiveGenerator.setNext(&blurGenerator);
-	blurGenerator.setNext(&noiseGenerator);
-
-	/** Generate dataset */
-	copyGenerator.generateDataset();
+	/**
+	 * Generate dataset
+	 */
+	noiseGenerator.generateDataset();
 
 	return EXIT_SUCCESS;
 }
