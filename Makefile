@@ -78,7 +78,7 @@ DIRS_CREATED := $(BUILDDIR)/.null
 #-------------------------------------------------------------------------------
 
 # Builds the projects
-all: $(EXECUTABLE)
+all: $(EXECUTABLE) $(LIBRARY)
     
 # Creates executable file
 $(EXECUTABLE): $(OBJECTS)
