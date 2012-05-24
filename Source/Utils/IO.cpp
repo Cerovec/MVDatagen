@@ -98,7 +98,7 @@ void IO::handleUserInput(const cv::Mat& image, const char* title, std::vector<cv
 
 	while(1) {
 		/* wait for keyboard input */
-		key = cvWaitKey(0);
+		key = cv::waitKey(0) % 0x100;
 
 		/* 'q' pressed, quit the program */
 		if (key == ' ') break;
