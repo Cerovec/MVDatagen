@@ -21,6 +21,7 @@
 #include "Marker.h"
 #include "Dataset.h"
 #include <opencv2/opencv.hpp>
+#include <iostream>
 
 namespace mv {
 
@@ -35,6 +36,8 @@ void Marker::markDataset() {
 	for (unsigned int i = 0; i < filenames.size(); i++) {
 		cv::Mat image;
 		IO::loadImageFromFile(image, filenames[i].c_str());
+		std::cout << "Processing image " << i+1 << "/" << filenames.size() << " (" << filenames[i] << ")" << std::endl;
+
 
 		std::string windowName = "Marker";
 		std::vector<cv::Point> points;
