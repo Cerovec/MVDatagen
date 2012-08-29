@@ -52,10 +52,11 @@ void Marker::markDataset() {
 		data.marks_ = marks;
 
 		dataset.dataset_.push_back(data);
+		dataset.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION).c_str());
 	}
 
-	dataset.display(startingResultsFolder_);
-	dataset.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION).c_str());
+	//dataset.display(startingResultsFolder_);
+//	dataset.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION).c_str());
 }
 
 } /* namespace mv */
