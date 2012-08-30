@@ -68,6 +68,11 @@ public:
 	 * Performs the dataset marking
 	 */
 	void markDataset();
+
+	/**
+	 * Performs the dataset marking - ignores images that are already in dataset
+	 */
+	void updateDataset();
 };
 
 } /* namespace mv */
