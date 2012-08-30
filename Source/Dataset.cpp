@@ -170,6 +170,8 @@ void Dataset::deserialize(const std::string& filename) {
 		}
 
 		ifs.close();
+	} else {
+		fprintf(stderr, "Unable to opet %s!\n", filename.c_str());
 	}
 }
 
