@@ -42,33 +42,35 @@ void ImageData::display(const std::string& folderName) const {
 }
 
 void ImageData::serialize(std::ostream& stream) {
-	unsigned int i;
-	// filename
-	stream << "\"Filename\": \""  << filename_ << "\"; ";
+	if(points_.size()>0 || marks_.size()>0) {
+		unsigned int i;
+		// filename
+		stream << "\"Filename\": \""  << filename_ << "\"; ";
 
-	// points
-	stream << "\"Points\": [";
+		// points
+		stream << "\"Points\": [";
 
-	if (points_.size() > 1) {
-		for (i = 0; i < points_.size()-1; i++) {
-			stream << "[" << points_[i].x << "," << points_[i].y << "], ";
+		if (points_.size() > 1) {
+			for (i = 0; i < points_.size()-1; i++) {
+				stream << "[" << points_[i].x << "," << points_[i].y << "], ";
+			}
+			stream << "[" << points_[i].x << "," << points_[i].y << "]";
+		} else if (points_.size() == 1) {
+			stream << "[" << points_[0].x << "," << points_[0].y << "]";
 		}
-		stream << "[" << points_[i].x << "," << points_[i].y << "]";
-	} else if (points_.size() == 1) {
-		stream << "[" << points_[0].x << "," << points_[0].y << "]";
-	}
 
-	// marks
-	stream << "]; \"Marks\": [";
-	if (marks_.size() > 1) {
-		for (i = 0; i < marks_.size()-1; i++) {
-			stream << "\"" << marks_[i] << "\", ";
+		// marks
+		stream << "]; \"Marks\": [";
+		if (marks_.size() > 1) {
+			for (i = 0; i < marks_.size()-1; i++) {
+				stream << "\"" << marks_[i] << "\", ";
+			}
+			stream << "\"" << marks_[i] << "\"]" << std::endl;
+		} else if (marks_.size() == 1) {
+			stream << "\"" << marks_[0] << "\"]" << std::endl;
+		} else {
+			stream << "]" << std::endl;
 		}
-		stream << "\"" << marks_[i] << "\"]" << std::endl;
-	} else if (marks_.size() == 1) {
-		stream << "\"" << marks_[0] << "\"]" << std::endl;
-	} else {
-		stream << "]" << std::endl;
 	}
 }
 
@@ -138,7 +140,7 @@ Dataset::~Dataset() {
 }
 
 void Dataset::serialize(const std::string& filename) {
-	std::ofstream ofs(filename.c_str(), std::fstream::app);
+	std::ofstream ofs(filename.c_str());
 
 	if (ofs.is_open()) {
 		for (unsigned int i = 0; i < dataset_.size(); i++) {
@@ -168,6 +170,8 @@ void Dataset::deserialize(const std::string& filename) {
 		}
 
 		ifs.close();
+	} else {
+		fprintf(stderr, "Unable to opet %s!\n", filename.c_str());
 	}
 }
 

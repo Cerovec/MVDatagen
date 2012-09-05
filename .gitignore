@@ -10,3 +10,6 @@ Debug
 Build
 
 MVDatagen
+.project
+.cproject
+.settings

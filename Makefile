@@ -34,7 +34,7 @@ SOURCEDIRS := $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURC
 BUILDDIR := Build
 
 # Defined macros
-MACROS := DEBUG IMSHOW
+MACROS := DEBUG IMSHOW 
 
 # Include folders
 INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include
@@ -46,7 +46,7 @@ CXXFLAGS := -O0 -Wall -g3
 LDPATHS += /usr/local/lib /opt/local/lib /usr/lib
 
 # Libraries linked
-LIBS += opencv_core opencv_highgui opencv_imgproc
+LIBS += opencv_core opencv_highgui opencv_imgproc 
 
 # Additional linker flags
 LDFLAGS := 
