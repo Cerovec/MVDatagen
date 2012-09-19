@@ -40,6 +40,7 @@ static struct option options[] = {
     {"blur-num", required_argument, 0, 'b'},
     {"blur-radius", required_argument, 0, 'r'},
     {"flip", required_argument, 0, 'f'},
+    {"show-only", no_argument, 0, 'o'},
     {0, 0,  0, 0}
 };
 
@@ -49,6 +50,7 @@ static void help() {
 		"Use the command as follows:\n"
 		"./MVDatagen -e <existing_dataset_folder> [-g <generated_dataset_folder>]\n"
 		" If -g option is ommited, only marking process will be performed.\n"
+		" Adding -o option will just show images that are in dataset and their marks. No updates will be performed."
 		"\n"
 		"For the first use, locate the folder with your images and decide where you want your generated images to be placed.\n"
 		"Then use: ./MVDatagen -e <existingImagesFolder> -g <generatedImagesFolder>\n"
@@ -91,9 +93,10 @@ int main(int argc, char* argv[]) {
 	char argument;
 
 	bool flipNum = 1;
+	bool showOnly = false;
 
 	while ((argument = getopt_long(
-			argc, argv, "e:g:n:v:p:s:b:r:f:", options, &optionIndex)) > -1) {
+			argc, argv, "e:g:n:v:p:s:b:r:f:o:", options, &optionIndex)) > -1) {
 		switch (argument) {
 			case 'e':
 				existingDatasetFolder = optarg;
@@ -122,6 +125,9 @@ int main(int argc, char* argv[]) {
 			case 'f':
 				flipNum = atoi(optarg);
 				break;
+			case 'o':
+				showOnly = true;
+				break;
 			default:
 				help();
 				break;
@@ -147,40 +153,49 @@ int main(int argc, char* argv[]) {
 	}
 	/** Mark the original images if dataset doesn't exist */
 	mv::Marker marker(existingDatasetFolder);
-	if (!marker.datasetExists()) {
-		printf("Marking dataset for \"%s\"...\n", existingDatasetFolder);
-		marker.markDataset();
+	if(!showOnly) {
+		if (!marker.datasetExists()) {
+			printf("Marking dataset for \"%s\"...\n", existingDatasetFolder);
+			marker.markDataset();
+		} else {
+			printf("Dataset for images at \"%s\" already exists.\n"
+					"Updating dataset for new images...\n", existingDatasetFolder);
+			marker.updateDataset();
+		}
+
+		if(generatedDatasetFolder!=NULL) {
+			/** Remove existing dataset in generated dataset folder */
+			std::string genDatasetFilename = mv::IO::appendFilenameToFolderPath(
+					generatedDatasetFolder, mv::Marker::DATASET_FILENAME_EXTENSION);
+			remove(genDatasetFilename.c_str());
+
+			/** Create generator chain */
+			mv::CopyGenerator copyGenerator(
+					existingDatasetFolder, generatedDatasetFolder);
+			mv::FlipGenerator flipGenerator(
+					generatedDatasetFolder, generatedDatasetFolder, flipNum);
+			mv::PerspectiveGenerator perspectiveGenerator(
+					generatedDatasetFolder, generatedDatasetFolder, perspectiveNum, perspectiveVariance);
+			mv::BlurGenerator blurGenerator(
+					generatedDatasetFolder, generatedDatasetFolder, blurNum, blurRadius);
+			mv::NoiseGenerator noiseGenerator(
+					generatedDatasetFolder, generatedDatasetFolder, noiseNum, noiseVariance);
+
+			copyGenerator.setNext(&flipGenerator);
+			flipGenerator.setNext(&perspectiveGenerator);
+			perspectiveGenerator.setNext(&blurGenerator);
+			blurGenerator.setNext(&noiseGenerator);
+
+			/** Generate dataset */
+			copyGenerator.generateDataset();
+		}
 	} else {
-		printf("Dataset for images at \"%s\" already exists.\n"
-				"Updating dataset for new images...\n", existingDatasetFolder);
-		marker.updateDataset();
-	}
-
-	if(generatedDatasetFolder!=NULL) {
-		/** Remove existing dataset in generated dataset folder */
-		std::string genDatasetFilename = mv::IO::appendFilenameToFolderPath(
-				generatedDatasetFolder, mv::Marker::DATASET_FILENAME_EXTENSION);
-		remove(genDatasetFilename.c_str());
-
-		/** Create generator chain */
-		mv::CopyGenerator copyGenerator(
-				existingDatasetFolder, generatedDatasetFolder);
-		mv::FlipGenerator flipGenerator(
-				generatedDatasetFolder, generatedDatasetFolder, flipNum);
-		mv::PerspectiveGenerator perspectiveGenerator(
-				generatedDatasetFolder, generatedDatasetFolder, perspectiveNum, perspectiveVariance);
-		mv::BlurGenerator blurGenerator(
-				generatedDatasetFolder, generatedDatasetFolder, blurNum, blurRadius);
-		mv::NoiseGenerator noiseGenerator(
-				generatedDatasetFolder, generatedDatasetFolder, noiseNum, noiseVariance);
-
-		copyGenerator.setNext(&flipGenerator);
-		flipGenerator.setNext(&perspectiveGenerator);
-		perspectiveGenerator.setNext(&blurGenerator);
-		blurGenerator.setNext(&noiseGenerator);
-
-		/** Generate dataset */
-		copyGenerator.generateDataset();
+		if(marker.datasetExists()) {
+			printf("Showing contents of existing dataset...\n");
+			marker.showDataset();
+		} else {
+			printf("Given dataset does not exist! There is nothing to show!");
+		}
 	}
 
 	return EXIT_SUCCESS;

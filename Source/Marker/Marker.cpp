@@ -102,4 +102,10 @@ void Marker::updateDataset() {
 	}
 }
 
+void Marker::showDataset() {
+	Dataset ds;
+	ds.deserialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION));
+	ds.display(startingResultsFolder_);
+}
+
 } /* namespace mv */

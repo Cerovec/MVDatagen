@@ -37,8 +37,8 @@ void PerspectiveGenerator::generateSample(const ImageData& originalSample,
 	IO::loadImageFromFile(originalImage,
 			IO::appendFilenameToFolderPath(startingResultsFolder_, originalSample.filename_).c_str());
 
-	double variance;
-	variance = fabs(RNG.gaussian(perspectiveVariance_));
+//	double variance;
+//	variance = fabs(RNG.gaussian(perspectiveVariance_));
 
 	cv::Mat generatedImage;
 

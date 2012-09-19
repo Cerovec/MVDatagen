@@ -73,6 +73,11 @@ public:
 	 * Performs the dataset marking - ignores images that are already in dataset
 	 */
 	void updateDataset();
+
+	/**
+	 * shows images and their marks from dataset
+	 */
+	void showDataset();
 };
 
 } /* namespace mv */
