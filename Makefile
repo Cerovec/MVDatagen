@@ -37,13 +37,13 @@ BUILDDIR := Build
 MACROS := DEBUG IMSHOW 
 
 # Include folders
-INCLUDES += $(SOURCEROOT) /usr/local/include
+INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include
 
 # Additional compiler flags
 CXXFLAGS := -O0 -Wall -g3
 
 # Library search folders
-LDPATHS += /usr/local/lib
+LDPATHS += /usr/local/lib /opt/local/lib /usr/lib
 
 # Libraries linked
 LIBS += opencv_core opencv_highgui opencv_imgproc 
