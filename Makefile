@@ -28,7 +28,7 @@ SOURCEROOT := Source
 EXTENSION := cpp
 
 # Directories with sources
-SOURCEDIRS := $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURCEROOT)/Utils
+SOURCEDIRS := $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURCEROOT)/Utils $(SOURCEROOT)/Gpu
 
 # Intermediate and output files are placed into BUILDDIR
 BUILDDIR := Build
@@ -37,19 +37,21 @@ BUILDDIR := Build
 MACROS := DEBUG IMSHOW 
 
 # Include folders
-INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include
+INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source
 
 # Additional compiler flags
 CXXFLAGS := -O0 -Wall -g3
 
 # Library search folders
-LDPATHS += /usr/local/lib /opt/local/lib /usr/lib
+LDPATHS += /usr/local/lib /opt/local/lib /usr/lib ../GPUMVToolset/Build ../CoreUtils/Build
 
 # Libraries linked
-LIBS += opencv_core opencv_highgui opencv_imgproc 
+LIBS += GPUMVToolset EGL GL CoreUtils opencv_core opencv_highgui opencv_imgproc 
 
 # Additional linker flags
 LDFLAGS := 
+
+DEPLIBS := ../GPUMVToolset/Build/libGPUMVToolset.a ../CoreUtils/Build/libCoreUtils.a
 
 #-------------------------------------------------------------------------------
 # HELPER VARIABLES
@@ -81,7 +83,7 @@ DIRS_CREATED := $(BUILDDIR)/.null
 all: $(EXECUTABLE) $(LIBRARY)
     
 # Creates executable file
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) $(DEPLIBS)
 	@echo '[Building target: $@]'
 	@echo '[Invoking: $(LD) Linker]'
 	$(LD) $(LDFLAGS) $(OBJECTS) -o $@ \
