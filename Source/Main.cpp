@@ -29,6 +29,7 @@
 #include "Generator/PerspectiveGenerator.h"
 #include "Generator/CopyGenerator.h"
 #include "Generator/FlipGenerator.h"
+#include "Gpu/GpuGenerator.hpp"
 
 static struct option options[] = {
     {"existing_dataset_folder", required_argument, 0, 'e'},
@@ -41,6 +42,7 @@ static struct option options[] = {
     {"blur-radius", required_argument, 0, 'r'},
     {"flip", required_argument, 0, 'f'},
     {"show-only", no_argument, 0, 'o'},
+    {"use-gpu", no_argument, 0, 'u'},
     {0, 0,  0, 0}
 };
 
@@ -94,9 +96,10 @@ int main(int argc, char* argv[]) {
 
 	bool flipNum = 1;
 	bool showOnly = false;
+	bool useGPUGenerator = false;
 
 	while ((argument = getopt_long(
-			argc, argv, "e:g:n:v:p:s:b:r:f:o:", options, &optionIndex)) > -1) {
+			argc, argv, "e:g:n:v:p:s:b:r:f:o:u:", options, &optionIndex)) > -1) {
 		switch (argument) {
 			case 'e':
 				existingDatasetFolder = optarg;
@@ -128,6 +131,9 @@ int main(int argc, char* argv[]) {
 			case 'o':
 				showOnly = true;
 				break;
+			case 'u':
+				useGPUGenerator = true;
+				break;
 			default:
 				help();
 				break;
@@ -151,6 +157,18 @@ int main(int argc, char* argv[]) {
 			generatedDatasetFolder[generatedLength - 1] = 0;
 		}
 	}
+
+	if(useGPUGenerator) {
+		ErrorStatus status;
+		mv::GpuGenerator generator(existingDatasetFolder, status);
+		if(status!=ERROR_STATUS_SUCCESS) {
+			LOGE("Failed to initialize gpu generator");
+			return 0;
+		}
+		generator.generateImages("mic");
+		return 0;
+	}
+
 	/** Mark the original images if dataset doesn't exist */
 	mv::Marker marker(existingDatasetFolder);
 	if(!showOnly) {
