@@ -9,6 +9,7 @@
 #include "Utils/IO.h"
 #include "RenderingContext/IRenderingContext.hpp"
 #include "RenderingSurface/IRenderingSurface.hpp"
+#include "MatrixModifier.hpp"
 
 namespace mv {
 
@@ -35,12 +36,8 @@ void GpuGenerator::generateVariations() {
 		for(float zDist = 0.f; zDist<2.5f; zDist+=0.5f) { // for loop modifies rectangle's z position
 			for(float yRot = 0.f; yRot<1.0; yRot+=0.2f) { // for loop modifies rotation around y axis
 				float awbFactors[3] = {bFact, 1.f, 1.f}; // White balance modification factors in BGR order
-				cv::Mat transform = cv::Mat::eye(4, 4, CV_32F); // 3D transformation matrix
-				transform.at<float>(2, 3) = zDist;
-				transform.at<float>(1, 0) = sinf(yRot);
-				transform.at<float>(0, 0) = cosf(yRot);
-				transform.at<float>(0, 1) = -sinf(yRot);
-				transform.at<float>(1, 1) = cosf(yRot);
+				cv::Mat transform = gpumv::MatrixModifier().rotateAroundX(0.3*yRot).rotateAroundZ(0.3*zDist).
+						rotateAroundY(yRot).translate(0,0,zDist).getTransformMatrix();
 				// perform image modification
 				genFilter_.setAwbFactors(awbFactors);
 				genFilter_.setTransformMatrix(transform);
