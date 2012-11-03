@@ -7,14 +7,14 @@
 
 #include "GpuGenerator.hpp"
 #include "Utils/IO.h"
-#include "RenderingContext/IRenderingContext.hpp"
-#include "RenderingSurface/IRenderingSurface.hpp"
+#include "RenderingContext/RenderingContext.hpp"
+#include "RenderingSurface/RenderingSurface.hpp"
 #include "MatrixModifier.hpp"
 
 namespace mv {
 
 GpuGenerator::GpuGenerator(std::string folder, ErrorStatus &status) :
-		context_(gpumv::IRenderingContext::getContext(640, 480)),
+		context_(gpumv::RenderingContext::getContext(640, 480)),
 		folder_(folder),
 		frameProvider_(context_),
 		genFilter_(context_, status) {
@@ -27,7 +27,7 @@ GpuGenerator::GpuGenerator(std::string folder, ErrorStatus &status) :
 }
 
 GpuGenerator::~GpuGenerator() {
-	gpumv::IRenderingContext::terminateContext();
+	gpumv::RenderingContext::terminateContext();
 }
 
 void GpuGenerator::generateVariations() {

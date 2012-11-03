@@ -46,7 +46,15 @@ CXXFLAGS := -O0 -Wall -g3
 LDPATHS += /usr/local/lib /opt/local/lib /usr/lib ../GPUMVToolset/Build ../CoreUtils/Build
 
 # Libraries linked
-LIBS += GPUMVToolset EGL GL CoreUtils opencv_core opencv_highgui opencv_imgproc 
+LIBS += GPUMVToolset 
+
+ifdef GLX
+LIBS += GL X11
+else
+LIBS += GLESv2 EGL
+endif
+
+LIBS += CoreUtils opencv_core opencv_highgui opencv_imgproc 
 
 # Additional linker flags
 LDFLAGS := 

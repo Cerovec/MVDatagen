@@ -15,7 +15,7 @@
 #include <string>
 
 namespace gpumv {
-	class IRenderingContext;
+	class RenderingContext;
 }
 
 namespace mv {
@@ -28,7 +28,7 @@ public:
 	void generateImages(std::string outFolder);
 
 private:
-	gpumv::IRenderingContext *context_;
+	gpumv::RenderingContext *context_;
 	std::string folder_;
 	mv::Dataset ds_;
 	gpumv::CameraFrameProvider frameProvider_;
