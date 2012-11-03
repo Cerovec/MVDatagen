@@ -37,21 +37,22 @@ BUILDDIR := Build
 MACROS := DEBUG IMSHOW 
 
 # Include folders
-INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source
+INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source \
+ ../MVToolset/Source
 
 # Additional compiler flags
 CXXFLAGS := -O0 -Wall -g3
 
 # Library search folders
-LDPATHS += /usr/local/lib /opt/local/lib /usr/lib ../GPUMVToolset/Build ../CoreUtils/Build
+LDPATHS += /usr/local/lib /opt/local/lib /usr/lib ../GPUMVToolset/Build ../MVToolset/Build ../CoreUtils/Build
 
 # Libraries linked
-LIBS += GPUMVToolset EGL GL CoreUtils opencv_core opencv_highgui opencv_imgproc 
+LIBS += MVToolset GPUMVToolset EGL GL CoreUtils opencv_core opencv_highgui opencv_imgproc 
 
 # Additional linker flags
 LDFLAGS := 
 
-DEPLIBS := ../GPUMVToolset/Build/libGPUMVToolset.a ../CoreUtils/Build/libCoreUtils.a
+DEPLIBS := ../GPUMVToolset/Build/libGPUMVToolset.a ../MVToolset/Build/libMVToolset.a ../CoreUtils/Build/libCoreUtils.a
 
 #-------------------------------------------------------------------------------
 # HELPER VARIABLES

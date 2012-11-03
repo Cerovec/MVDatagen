@@ -175,10 +175,16 @@ int main(int argc, char* argv[]) {
 		if (!marker.datasetExists()) {
 			printf("Marking dataset for \"%s\"...\n", existingDatasetFolder);
 			marker.markDataset();
+			// filter duplicate marks
+			marker.filterDataset();
 		} else {
 			printf("Dataset for images at \"%s\" already exists.\n"
 					"Updating dataset for new images...\n", existingDatasetFolder);
 			marker.updateDataset();
+			// filter duplicate marks
+			printf("Filtering duplicate marks...\n");
+			marker.filterDataset();
+			printf("Done.");
 		}
 
 		if(generatedDatasetFolder!=NULL) {

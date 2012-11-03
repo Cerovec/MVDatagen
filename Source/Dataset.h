@@ -153,6 +153,7 @@ public:
 
 	void display(const std::string& folderName) const {
 		for (unsigned int i = 0; i < dataset_.size(); i++) {
+			printf("Number of marks: %lu\n", dataset_[i].points_.size());
 			dataset_[i].display(folderName);
 		}
 	}

@@ -14,7 +14,7 @@
 namespace mv {
 
 GpuGenerator::GpuGenerator(std::string folder, ErrorStatus &status) :
-		context_(gpumv::IRenderingContext::getContext(640, 480)),
+		context_(gpumv::RenderingContext::getContext(640, 480)),
 		folder_(folder),
 		frameProvider_(context_),
 		genFilter_(context_, status) {
@@ -27,7 +27,7 @@ GpuGenerator::GpuGenerator(std::string folder, ErrorStatus &status) :
 }
 
 GpuGenerator::~GpuGenerator() {
-	gpumv::IRenderingContext::terminateContext();
+	gpumv::RenderingContext::terminateContext();
 }
 
 void GpuGenerator::generateVariations() {

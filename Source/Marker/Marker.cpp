@@ -18,10 +18,11 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "Marker.h"
 #include "Dataset.h"
-#include <opencv2/opencv.hpp>
+#include "Geometry.h"
+#include "Marker.h"
 #include <iostream>
+#include <opencv2/opencv.hpp>
 #include <set>
 
 namespace mv {
@@ -100,6 +101,28 @@ void Marker::updateDataset() {
 			ds.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION).c_str());
 		}
 	}
+}
+
+void Marker::filterDataset() {
+	Dataset ds;
+	ds.deserialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION));
+	// filter extra points
+	for(std::vector<ImageData>::iterator it=ds.dataset_.begin(); it!=ds.dataset_.end(); ++it) {
+		if(it->points_.size()>4) {
+			std::vector<cv::Point> newPoints;
+			newPoints.reserve(4);
+			newPoints.push_back(it->points_[0]);
+			for(uint32_t i=1; i<it->points_.size(); ++i) {
+				// only consecutive points are filtered
+				if(mv::Geometry::distance(it->points_[i-1], it->points_[i])>5) {
+					newPoints.push_back(it->points_[i]);
+				}
+			}
+			it->points_.clear();
+			it->points_ = newPoints;
+		}
+	}
+	ds.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION));
 }
 
 void Marker::showDataset() {

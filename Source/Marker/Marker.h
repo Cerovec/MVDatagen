@@ -78,6 +78,13 @@ public:
 	 * shows images and their marks from dataset
 	 */
 	void showDataset();
+
+	/**
+	 * method filters the dataset by removing all points that are too close and leaving just one
+	 * this is required to filter out errors introduced by accidentaly double-clicking the same
+	 * point while marking the dataset
+	 */
+	void filterDataset();
 };
 
 } /* namespace mv */
