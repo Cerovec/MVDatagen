@@ -7,8 +7,8 @@
 
 #include "GpuGenerator.hpp"
 #include "Utils/IO.h"
-#include "RenderingContext/IRenderingContext.hpp"
-#include "RenderingSurface/IRenderingSurface.hpp"
+#include "RenderingContext/RenderingContext.hpp"
+#include "RenderingSurface/RenderingSurface.hpp"
 #include "MatrixModifier.hpp"
 
 namespace mv {
