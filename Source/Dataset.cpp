@@ -175,4 +175,15 @@ void Dataset::deserialize(const std::string& filename) {
 	}
 }
 
+Dataset::Dataset(const Dataset& other) :
+    dataset_(other.dataset_) {
+}
+
+Dataset& Dataset::operator =(const Dataset& other) {
+    if(this!=&other) {
+        dataset_ = other.dataset_;
+    }
+    return *this;
+}
+
 } /* namespace mv */

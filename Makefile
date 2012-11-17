@@ -39,7 +39,7 @@ SOURCEDIRS := $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURC
 BUILDDIR := Build
 
 # Defined macros
-MACROS := DEBUG IMSHOW 
+MACROS := DEBUG IMSHOW USE_GPU_DEWARP
 
 # Include folders
 INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source ../MVToolset/Source
