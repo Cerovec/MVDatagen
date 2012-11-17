@@ -8,8 +8,13 @@
 # TOOLS
 #-------------------------------------------------------------------------------
 
+ifdef CLANG
+CXX := ccache clang++
+LD := clang++
+else
 CXX := ccache g++
 LD := g++
+endif
 AR := ar
 RM := @rm -rf
 SHELL := /bin/bash
