@@ -42,6 +42,10 @@ INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Sou
 # Additional compiler flags
 CXXFLAGS := -O0 -Wall -g3
 
+ifdef CLANG
+CXXFLAGS += -Wno-overloaded-virtual
+endif
+
 # Library search folders
 LDPATHS += 	/usr/local/lib /opt/local/lib /usr/lib \
 			../GPUMVToolset/Build ../CoreUtils/Build \
