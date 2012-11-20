@@ -41,6 +41,10 @@ BUILDDIR := Build
 # Defined macros
 MACROS := DEBUG IMSHOW USE_GPU_DEWARP
 
+ifdef STFU
+MACROS += DISABLE_LOG PUBLISH_BUILD
+endif
+
 # Include folders
 INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source ../MVToolset/Source
 
