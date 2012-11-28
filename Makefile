@@ -49,7 +49,7 @@ endif
 INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source ../MVToolset/Source
 
 # Additional compiler flags
-CXXFLAGS := -O0 -Wall -g3
+CXXFLAGS := -O0 -Wall -g3 -fPIC
 
 ifdef CLANG
 CXXFLAGS += -Wno-overloaded-virtual
@@ -70,6 +70,10 @@ LIBS += GL X11
 else
 LIBS += GLESv2 EGL
 endif
+endif
+
+ifdef GLX
+MACROS += USE_GLX
 endif
 
 LIBS += CoreUtils opencv_core opencv_highgui opencv_imgproc 
