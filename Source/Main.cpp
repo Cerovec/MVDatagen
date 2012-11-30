@@ -30,6 +30,7 @@
 #include "Generator/CopyGenerator.h"
 #include "Generator/FlipGenerator.h"
 #include "Gpu/GpuGenerator.hpp"
+#include "Matlab.h"
 
 static struct option options[] = {
     {"existing_dataset_folder", required_argument, 0, 'e'},
@@ -78,7 +79,10 @@ static void help() {
 	exit(EXIT_FAILURE);
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]){
+
+	printf("%d", argc);
+
 	char* existingDatasetFolder = NULL;
 	char* generatedDatasetFolder = NULL;
 
