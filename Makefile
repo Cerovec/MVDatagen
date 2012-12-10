@@ -53,7 +53,7 @@ endif
 INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source ../MVToolset/Source
 
 # Additional compiler flags
-CXXFLAGS := -O0 -Wall -g3
+CXXFLAGS := -O0 -Wall -g3 -fPIC
 
 ifdef CLANG
 CXXFLAGS += -Wno-overloaded-virtual
@@ -67,16 +67,27 @@ LDPATHS += 	/usr/local/lib /opt/local/lib /usr/lib \
 # Libraries linked
 LIBS += MVToolset GPUMVToolset 
 
+ifdef MACOS
+else
 ifdef GLX
 LIBS += GL X11
 else
 LIBS += GLESv2 EGL
 endif
+endif
+
+ifdef GLX
+MACROS += USE_GLX
+endif
 
 LIBS += CoreUtils opencv_core opencv_highgui opencv_imgproc 
 
 # Additional linker flags
-LDFLAGS := 
+ifdef MACOS
+LDFLAGS := -framework OpenGL -framework Foundation -framework AppKit
+else
+LDFLAGS :=
+endif
 
 DEPLIBS := 	../GPUMVToolset/Build/libGPUMVToolset.a \
 			../CoreUtils/Build/libCoreUtils.a \
