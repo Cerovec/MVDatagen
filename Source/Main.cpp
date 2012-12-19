@@ -21,14 +21,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-#include "Dataset.h"
-#include "Marker/Marker.h"
-#include "Utils/IO.h"
-#include "Generator/NoiseGenerator.h"
-#include "Generator/BlurGenerator.h"
-#include "Generator/PerspectiveGenerator.h"
-#include "Generator/CopyGenerator.h"
-#include "Generator/FlipGenerator.h"
+#include "Dataset.hpp"
+#include "Marker/Marker.hpp"
+#include "Utils/IO.hpp"
+#include "Generator/NoiseGenerator.hpp"
+#include "Generator/BlurGenerator.hpp"
+#include "Generator/PerspectiveGenerator.hpp"
+#include "Generator/CopyGenerator.hpp"
+#include "Generator/FlipGenerator.hpp"
 #include "Gpu/GpuGenerator.hpp"
 #include "Matlab.h"
 

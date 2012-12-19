@@ -8,7 +8,7 @@
 #ifndef GPUGENERATOR_HPP_
 #define GPUGENERATOR_HPP_
 
-#include "Dataset.h"
+#include "Dataset.hpp"
 #include "CommonHeaders.h"
 #include "CameraFrameProvider.hpp"
 #include "GpuImageFilters/ImageGeneratorFilter.hpp"

@@ -18,9 +18,9 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "Dataset.h"
-#include "Utils/StringUtils.h"
-#include "Utils/IO.h"
+#include "Dataset.hpp"
+#include "Utils/StringUtils.hpp"
+#include "Utils/IO.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>

@@ -6,7 +6,7 @@
  */
 
 #include "GpuGenerator.hpp"
-#include "Utils/IO.h"
+#include "Utils/IO.hpp"
 #include "RenderingContext/RenderingContext.hpp"
 #include "RenderingSurface/RenderingSurface.hpp"
 #include "MatrixModifier.hpp"

@@ -18,7 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "Generator.h"
+#include "Generator.hpp"
 #include <time.h>
 
 namespace mv {

@@ -24,9 +24,9 @@
 #include <stdlib.h>
 #include <string>
 #include <opencv2/opencv.hpp>
-#include "Utils/Utils.h"
-#include "Marker/Marker.h"
-#include "Dataset.h"
+#include "Utils/Utils.hpp"
+#include "Marker/Marker.hpp"
+#include "Dataset.hpp"
 
 namespace mv {
 

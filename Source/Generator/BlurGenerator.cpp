@@ -18,8 +18,8 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "BlurGenerator.h"
-#include "Utils/IO.h"
+#include "BlurGenerator.hpp"
+#include "Utils/IO.hpp"
 #include <stdio.h>
 
 namespace mv {

@@ -18,8 +18,8 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "CopyGenerator.h"
-#include "Utils/IO.h"
+#include "CopyGenerator.hpp"
+#include "Utils/IO.hpp"
 
 namespace mv {
 

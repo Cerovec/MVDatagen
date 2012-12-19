@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * CopyGenerator.h
+ * FlipGenerator.h
  *
- *  Created on: Apr 17, 2012
+ *  Created on: Apr 18, 2012
  *      Author: cerovec
  */
 
@@ -18,18 +18,18 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef COPYGENERATOR_H_
-#define COPYGENERATOR_H_
+#ifndef FLIPGENERATOR_H_
+#define FLIPGENERATOR_H_
 
-#include "Generator.h"
-#include "Utils/Utils.h"
+#include "Generator.hpp"
 
 namespace mv {
 
-class CopyGenerator: public mv::Generator {
+class FlipGenerator: public mv::Generator {
+
 protected:
 	/** Forbids copy constructor and assignment operator */
-	DISALLOW_COPY_AND_ASSIGN(CopyGenerator);
+	DISALLOW_COPY_AND_ASSIGN(FlipGenerator);
 
 	/**
 	 * Returns the generator's name
@@ -43,15 +43,15 @@ protected:
 			ImageData& generatedSample, std::string& generatedFilename) const;
 
 public:
-	CopyGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder) :
-		Generator(startingResultsFolder, generatedResultsFolder, 1) {
+	FlipGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder, const int flipNum) :
+		Generator(startingResultsFolder, generatedResultsFolder, flipNum != 0) {
 		// nothing to do
 	}
 
-	virtual ~CopyGenerator() {
+	virtual ~FlipGenerator() {
 		// nothing to do
 	}
 };
 
 } /* namespace mv */
-#endif /* COPYGENERATOR_H_ */
+#endif /* FLIPGENERATOR_H_ */

@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * PerspectiveGenerator.h
+ * NoiseGenerator.h
  *
  *  Created on: Apr 17, 2012
  *      Author: cerovec
@@ -17,11 +17,12 @@
  * THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
-#ifndef PERSPECTIVEGENERATOR_H_
-#define PERSPECTIVEGENERATOR_H_
 
-#include "Generator/Generator.h"
-#include "Utils/Utils.h"
+#ifndef NOISEGENERATOR_H_
+#define NOISEGENERATOR_H_
+
+#include "Generator/Generator.hpp"
+#include "Utils/Utils.hpp"
 #include <opencv2/opencv.hpp>
 
 namespace mv {
@@ -29,16 +30,16 @@ namespace mv {
 /**
  * Class generates samples that are blurred
  */
-class PerspectiveGenerator: public mv::Generator {
+class NoiseGenerator: public mv::Generator {
 
 protected:
 	/**
 	 * Variance of white noise
 	 */
-	const double perspectiveVariance_;
+	const double noiseVariance_;
 
 	/** Forbids copy constructor and assignment operator */
-	DISALLOW_COPY_AND_ASSIGN(PerspectiveGenerator);
+	DISALLOW_COPY_AND_ASSIGN(NoiseGenerator);
 
 	/**
 	 * Returns the generator's name
@@ -56,18 +57,18 @@ public:
 	/**
 	 * Constructor
 	 */
-	PerspectiveGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder,
-			const int numSamples, const unsigned int perspectiveVariance) :
+	NoiseGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder,
+			const int numSamples, const unsigned int noiseVariance) :
 				Generator(startingResultsFolder, generatedResultsFolder, numSamples),
-				perspectiveVariance_(perspectiveVariance_) {
+				noiseVariance_(noiseVariance) {
 		// nothing to do
 	}
 
-	virtual ~PerspectiveGenerator() {
+	virtual ~NoiseGenerator() {
 		// TODO Auto-generated destructor stub
 	}
 };
 
 } /* namespace mv */
 
-#endif /* PERSPECTIVEGENERATOR_H_ */
+#endif /* NOISEGENERATOR_H_ */

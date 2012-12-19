@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * NoiseGenerator.h
+ * BlurGenerator.h
  *
- *  Created on: Apr 17, 2012
+ *  Created on: Apr 4, 2012
  *      Author: cerovec
  */
 
@@ -18,28 +18,27 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef NOISEGENERATOR_H_
-#define NOISEGENERATOR_H_
+#ifndef BLURGENERATOR_H_
+#define BLURGENERATOR_H_
 
-#include "Generator/Generator.h"
-#include "Utils/Utils.h"
-#include <opencv2/opencv.hpp>
+#include "Generator/Generator.hpp"
+#include "Utils/Utils.hpp"
 
 namespace mv {
 
 /**
  * Class generates samples that are blurred
  */
-class NoiseGenerator: public mv::Generator {
+class BlurGenerator: public mv::Generator {
 
 protected:
 	/**
 	 * Variance of white noise
 	 */
-	const double noiseVariance_;
+	const unsigned int blurRadius_;
 
 	/** Forbids copy constructor and assignment operator */
-	DISALLOW_COPY_AND_ASSIGN(NoiseGenerator);
+	DISALLOW_COPY_AND_ASSIGN(BlurGenerator);
 
 	/**
 	 * Returns the generator's name
@@ -57,18 +56,17 @@ public:
 	/**
 	 * Constructor
 	 */
-	NoiseGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder,
-			const int numSamples, const unsigned int noiseVariance) :
+	BlurGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder,
+			const int numSamples, const unsigned int blurRadius) :
 				Generator(startingResultsFolder, generatedResultsFolder, numSamples),
-				noiseVariance_(noiseVariance) {
+				blurRadius_(blurRadius) {
 		// nothing to do
 	}
 
-	virtual ~NoiseGenerator() {
+	virtual ~BlurGenerator() {
 		// TODO Auto-generated destructor stub
 	}
 };
 
 } /* namespace mv */
-
-#endif /* NOISEGENERATOR_H_ */
+#endif /* BLURGENERATOR_H_ */

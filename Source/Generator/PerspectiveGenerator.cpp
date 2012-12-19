@@ -18,9 +18,9 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "PerspectiveGenerator.h"
-#include "Utils/IO.h"
-#include "Utils/Geometry.h"
+#include "PerspectiveGenerator.hpp"
+#include "Utils/IO.hpp"
+#include "Utils/Geometry.hpp"
 
 namespace mv {
 

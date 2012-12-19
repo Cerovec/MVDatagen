@@ -18,7 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "NoiseGenerator.h"
+#include "NoiseGenerator.hpp"
 #include <stdlib.h>
 
 namespace mv {

@@ -18,7 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#include "FlipGenerator.h"
+#include "FlipGenerator.hpp"
 #include <opencv2/opencv.hpp>
 
 namespace mv {

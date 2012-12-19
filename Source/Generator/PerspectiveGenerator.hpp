@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * BlurGenerator.h
+ * PerspectiveGenerator.h
  *
- *  Created on: Apr 4, 2012
+ *  Created on: Apr 17, 2012
  *      Author: cerovec
  */
 
@@ -17,28 +17,28 @@
  * THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
+#ifndef PERSPECTIVEGENERATOR_H_
+#define PERSPECTIVEGENERATOR_H_
 
-#ifndef BLURGENERATOR_H_
-#define BLURGENERATOR_H_
-
-#include "Generator/Generator.h"
-#include "Utils/Utils.h"
+#include "Generator/Generator.hpp"
+#include "Utils/Utils.hpp"
+#include <opencv2/opencv.hpp>
 
 namespace mv {
 
 /**
  * Class generates samples that are blurred
  */
-class BlurGenerator: public mv::Generator {
+class PerspectiveGenerator: public mv::Generator {
 
 protected:
 	/**
 	 * Variance of white noise
 	 */
-	const unsigned int blurRadius_;
+	const double perspectiveVariance_;
 
 	/** Forbids copy constructor and assignment operator */
-	DISALLOW_COPY_AND_ASSIGN(BlurGenerator);
+	DISALLOW_COPY_AND_ASSIGN(PerspectiveGenerator);
 
 	/**
 	 * Returns the generator's name
@@ -56,17 +56,18 @@ public:
 	/**
 	 * Constructor
 	 */
-	BlurGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder,
-			const int numSamples, const unsigned int blurRadius) :
+	PerspectiveGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder,
+			const int numSamples, const unsigned int perspectiveVariance) :
 				Generator(startingResultsFolder, generatedResultsFolder, numSamples),
-				blurRadius_(blurRadius) {
+				perspectiveVariance_(perspectiveVariance_) {
 		// nothing to do
 	}
 
-	virtual ~BlurGenerator() {
+	virtual ~PerspectiveGenerator() {
 		// TODO Auto-generated destructor stub
 	}
 };
 
 } /* namespace mv */
-#endif /* BLURGENERATOR_H_ */
+
+#endif /* PERSPECTIVEGENERATOR_H_ */

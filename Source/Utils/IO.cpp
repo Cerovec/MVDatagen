@@ -7,8 +7,8 @@
  *      Author: cerovec
  */
 
-#include "IO.h"
-#include "Geometry.h"
+#include "IO.hpp"
+#include "Geometry.hpp"
 #include <string>
 #include <stdio.h>
 #include <dirent.h>
