@@ -49,6 +49,10 @@ ifdef STFU
 MACROS += DISABLE_LOG PUBLISH_BUILD
 endif
 
+ifdef TIMER_ENABLED
+MACROS += TIMER_ENABLED
+endif
+
 # Include folders
 INCLUDES += $(SOURCEROOT) /opt/local/include /usr/local/include ../CoreUtils/Source ../GPUMVToolset/Source ../MVToolset/Source
 
