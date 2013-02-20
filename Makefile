@@ -33,7 +33,7 @@ SOURCEROOT := Source
 EXTENSION := cpp
 
 # Directories with sources
-SOURCEDIRS := $(SOURCEROOT) $(SOURCEROOT)/Marker $(SOURCEROOT)/Generator $(SOURCEROOT)/Utils $(SOURCEROOT)/Gpu
+SOURCEDIRS := $(shell find $(SOURCEROOT) -type d)
 
 # Intermediate and output files are placed into BUILDDIR
 BUILDDIR := Build
