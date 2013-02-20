@@ -127,7 +127,7 @@ DIRS_CREATED := $(BUILDDIR)/.null
 all: $(EXECUTABLE) $(LIBRARY)
     
 # Creates executable file
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) $(DEPLIBS)
 	@echo '$(LD): $(PROJNAME) => $@'
 	@$(LD) $(LDFLAGS) $(OBJECTS) -o $@ \
 		$(foreach LIB, $(LIBS), -l $(LIB)) \
