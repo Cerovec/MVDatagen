@@ -127,48 +127,32 @@ DIRS_CREATED := $(BUILDDIR)/.null
 all: $(EXECUTABLE) $(LIBRARY)
     
 # Creates executable file
-$(EXECUTABLE): $(OBJECTS) $(DEPLIBS)
-	@echo '[Building target: $@]'
-	@echo '[Invoking: $(LD) Linker]'
-	$(LD) $(LDFLAGS) $(OBJECTS) -o $@ \
+$(EXECUTABLE): $(OBJECTS)
+	@echo '$(LD): $(PROJNAME) => $@'
+	@$(LD) $(LDFLAGS) $(OBJECTS) -o $@ \
 		$(foreach LIB, $(LIBS), -l $(LIB)) \
 		$(foreach LDPATH, $(LDPATHS), -L $(LDPATH))
-	@echo '[Finished building target: $@]'
-	@echo ' '
 	
-# Creates static library
 $(LIBRARY): $(OBJECTS)
-	@echo '[Building target: $@]'
-	@echo '[Invoking: $(AR) Archiver]'
-	$(AR) rcs $(LIBRARY) $(OBJECTS)
-	@echo '[Finished building target: $@]'
-	@echo ' '
+	@echo '$(AR): $(PROJNAME) => $@'
+	@$(AR) rcs $(LIBRARY) $(OBJECTS)
 	
-# Creates directories necessary for build
 $(DIRS_CREATED):
 	@echo '[Creating dirs]' 
 	@-if [ ! -e $(BUILDDIR) ]; then mkdir -p $(BUILDDIR); fi; 
 	@-$(foreach DIR, $(SOURCEDIRS), if [ ! -e $(BUILDDIR)/$(DIR) ]; \
 		then mkdir -p $(BUILDDIR)/$(DIR); fi; )
 	@touch $(DIRS_CREATED)
-	@echo '[Finished creating dirs]'
-	@echo ' '
 
-# Creates object files
 $(BUILDDIR)/%.o: %.$(EXTENSION) $(DIRS_CREATED)
-	@echo '[Compiling file: $<]'
-	@echo '[Invoking: $(CXX) Compiler]'
-	$(CXX) $(CXXFLAGS) -MMD -c $< -o $@ \
+	@echo '$(CXX): $(PROJNAME) <= $<'
+	@$(CXX) $(CXXFLAGS) -MMD -c $< -o $@ \
 		$(foreach INC, $(INCLUDES), -I $(INC)) \
 		$(foreach MACRO, $(MACROS), -D $(MACRO))
-	@echo '[Finished compiling: $<]'
-	@echo ' '
 	
-# Cleans directories
 .PHONY: clean
 clean:
 	@echo '[Cleaning]'
 	$(RM) $(BUILDDIR)
-	@echo '[Finished]'
 	
 -include $(DEPENDENCIES)
