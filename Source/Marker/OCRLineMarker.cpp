@@ -1,23 +1,11 @@
-/**
- * \file
+/*
+ * OCRLineMarker.cpp
  *
- * Marker.cpp
- *
- *  Created on: Apr 17, 2012
- *      Author: cerovec
+ *  Created on: Jun 11, 2013
+ *      Author: boris
  */
 
-/**
- * Copyright (c)2012 Racuni.hr d.o.o. All rights reserved.
- *
- * ANY UNAUTHORIZED USE OR SALE, DUPLICATION, OR DISTRIBUTION
- * OF THIS PROGRAM OR ANY OF ITS PARTS, IN SOURCE OR BINARY FORMS,
- * WITH OR WITHOUT MODIFICATION, WITH THE PURPOSE OF ACQUIRING
- * UNLAWFUL MATERIAL OR ANY OTHER BENEFIT IS PROHIBITED!
- * THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
- * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
- */
-
+#include "OCRLineMarker.hpp"
 #include "Dataset.hpp"
 #include "Geometry.hpp"
 #include "Marker.hpp"
@@ -27,9 +15,38 @@
 
 namespace mv {
 
-const std::string Marker::DATASET_FILENAME_EXTENSION = "/dataset.txt";
+OCRLineMarker::OCRLineMarker(std::string startingResultsFolder,
+							 int imagePercentage) :
+		Marker(startingResultsFolder, "/ocrDataset.txt"){
+	imagePercentage_ = std::min(std::max(imagePercentage/(float)100, 0.1f), 0.9f);
+}
 
-void Marker::markDataset() {
+OCRLineMarker::~OCRLineMarker() {
+	// nothing to do
+}
+
+void OCRLineMarker::getOcrLinePoints(const cv::Point& seed,
+									 const cv::Size& imageSize,
+									 std::vector<cv::Point>& points){
+	int height = imageSize.height*imagePercentage_;
+	int up = seed.y - (height >> 1);
+	int lo = seed.y + (height >> 1);
+	if (up < 0){
+		up -= up;
+		lo -= up;
+	}
+	if (lo >= imageSize.height){
+		int diff = lo - imageSize.height + 1;
+		up -= diff;
+		lo -= diff;
+	}
+	points.push_back(cv::Point(0, up));
+	points.push_back(cv::Point(imageSize.width-1, up));
+	points.push_back(cv::Point(0, lo));
+	points.push_back(cv::Point(imageSize.width-1, lo));
+}
+
+void OCRLineMarker::markDataset() {
 	std::vector<std::string> filenames;
 	IO::findImageFilenames(startingResultsFolder_, filenames);
 
@@ -49,11 +66,13 @@ void Marker::markDataset() {
 		IO::handleUserInput(image, windowName.c_str(), points, marks);
 		cv::destroyWindow(windowName.c_str());
 
-		ImageData data(IO::getFilenameFromPath(filenames[i]));
-		data.points_ = points;
-		data.marks_ = marks;
+		for (int j = 0; j < (int)points.size(); ++ j){
+			ImageData data(IO::getFilenameFromPath(filenames[i]));
+			getOcrLinePoints(points[j], cv::Size(image.cols, image.rows), data.points_);
+			data.marks_ = marks;
+			dataset.dataset_.push_back(data);
+		}
 
-		dataset.dataset_.push_back(data);
 		dataset.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_).c_str());
 	}
 
@@ -61,7 +80,7 @@ void Marker::markDataset() {
 //	dataset.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION).c_str());
 }
 
-void Marker::updateDataset() {
+void OCRLineMarker::updateDataset() {
 	Dataset ds;
 	ds.deserialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_));
 
@@ -93,42 +112,16 @@ void Marker::updateDataset() {
 			IO::handleUserInput(image, windowName.c_str(), points, marks);
 			cv::destroyWindow(windowName.c_str());
 
-			ImageData data(filename);
-			data.points_ = points;
-			data.marks_ = marks;
+			for (int j = 0; j < (int)points.size(); ++ j){
+				ImageData data(filename);
+				getOcrLinePoints(points[j], cv::Size(image.cols, image.rows), data.points_);
+				data.marks_ = marks;
+				ds.dataset_.push_back(data);
+			}
 
-			ds.dataset_.push_back(data);
 			ds.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_).c_str());
 		}
 	}
 }
 
-void Marker::filterDataset() {
-	Dataset ds;
-	ds.deserialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_));
-	// filter extra points
-	for(std::vector<ImageData>::iterator it=ds.dataset_.begin(); it!=ds.dataset_.end(); ++it) {
-		if(it->points_.size()>4) {
-			std::vector<cv::Point> newPoints;
-			newPoints.reserve(4);
-			newPoints.push_back(it->points_[0]);
-			for(uint32_t i=1; i<it->points_.size(); ++i) {
-				// only consecutive points are filtered
-				if(mv::Geometry::distance(it->points_[i-1], it->points_[i])>5) {
-					newPoints.push_back(it->points_[i]);
-				}
-			}
-			it->points_.clear();
-			it->points_ = newPoints;
-		}
-	}
-	ds.serialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_));
-}
-
-void Marker::showDataset() {
-	Dataset ds;
-	ds.deserialize(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_));
-	ds.display(startingResultsFolder_);
-}
-
-} /* namespace mv */
+} /* namespace barcode */

@@ -23,6 +23,7 @@
 #include <getopt.h>
 #include "Dataset.hpp"
 #include "Marker/Marker.hpp"
+#include "Marker/OCRLineMarker.hpp"
 #include "Utils/IO.hpp"
 #include "Generator/NoiseGenerator.hpp"
 #include "Generator/BlurGenerator.hpp"
@@ -35,6 +36,8 @@
 static struct option options[] = {
     {"existing_dataset_folder", required_argument, 0, 'e'},
     {"generated_dataset_folder", required_argument, 0, 'g'},
+    {"use-OCR-line-generator", no_argument, 0, 'l'},
+    {"ocr-image-height-percentage", required_argument, 0, 'h'},
     {"noise-num", required_argument, 0, 'n'},
     {"noise-variance", required_argument, 0, 'v'},
     {"perspective-num", required_argument, 0, 'p'},
@@ -54,6 +57,7 @@ static void help() {
 		"./MVDatagen -e <existing_dataset_folder> [-g <generated_dataset_folder>]\n"
 		" If -g option is ommited, only marking process will be performed.\n"
 		" Adding -o option will just show images that are in dataset and their marks. No updates will be performed."
+		" If -l option is used OCR line detectot is used. Use -h to set image height percentage (-h30 sets 30% of image height), 20 is default"
 		"\n"
 		"For the first use, locate the folder with your images and decide where you want your generated images to be placed.\n"
 		"Then use: ./MVDatagen -e <existingImagesFolder> -g <generatedImagesFolder>\n"
@@ -86,6 +90,9 @@ int main(int argc, char* argv[]){
 	char* existingDatasetFolder = NULL;
 	char* generatedDatasetFolder = NULL;
 
+	bool useOCRLineGenerator = false;
+	int imagePercentage = 20;
+
 	int noiseNum = 3;
 	int noiseVariance = 10;
 
@@ -103,13 +110,19 @@ int main(int argc, char* argv[]){
 	bool useGPUGenerator = false;
 
 	while ((argument = getopt_long(
-			argc, argv, "e:g:n:v:p:s:b:r:f:o:u:", options, &optionIndex)) > -1) {
+			argc, argv, "e:g:l:h:n:v:p:s:b:r:f:o:u:", options, &optionIndex)) > -1) {
 		switch (argument) {
 			case 'e':
 				existingDatasetFolder = optarg;
 				break;
 			case 'g':
 				generatedDatasetFolder = optarg;
+				break;
+			case 'l':
+				useOCRLineGenerator = true;
+				break;
+			case 'h':
+				imagePercentage = atoi(optarg);
 				break;
 			case 'n':
 				noiseNum = atoi(optarg);
@@ -174,20 +187,26 @@ int main(int argc, char* argv[]){
 	}
 
 	/** Mark the original images if dataset doesn't exist */
-	mv::Marker marker(existingDatasetFolder);
+	mv::Marker* marker = NULL;
+	if (useOCRLineGenerator){
+		LOGW("constructing ocr");
+		marker = new mv::OCRLineMarker(existingDatasetFolder, imagePercentage);
+	}else{
+		marker = new mv::Marker(existingDatasetFolder);
+	}
 	if(!showOnly) {
-		if (!marker.datasetExists()) {
+		if (!marker->datasetExists()) {
 			printf("Marking dataset for \"%s\"...\n", existingDatasetFolder);
-			marker.markDataset();
+			marker->markDataset();
 			// filter duplicate marks
-			marker.filterDataset();
+			marker->filterDataset();
 		} else {
 			printf("Dataset for images at \"%s\" already exists.\n"
 					"Updating dataset for new images...\n", existingDatasetFolder);
-			marker.updateDataset();
+			marker->updateDataset();
 			// filter duplicate marks
 			printf("Filtering duplicate marks...\n");
-			marker.filterDataset();
+			marker->filterDataset();
 			printf("Done.");
 		}
 
@@ -218,9 +237,9 @@ int main(int argc, char* argv[]){
 			copyGenerator.generateDataset();
 		}
 	} else {
-		if(marker.datasetExists()) {
+		if(marker->datasetExists()) {
 			printf("Showing contents of existing dataset...\n");
-			marker.showDataset();
+			marker->showDataset();
 		} else {
 			printf("Given dataset does not exist! There is nothing to show!");
 		}

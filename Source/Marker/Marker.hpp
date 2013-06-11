@@ -24,17 +24,22 @@
 #include <iostream>
 #include <fstream>
 #include "Utils/IO.hpp"
+#include "Counted.hpp"
 
 namespace mv {
 
-class Marker {
+class Marker : public Counted {
 
-private:
+protected:
 	/**
 	 * Folder in which the starting dataset is placed
 	 */
 	const std::string startingResultsFolder_;
 
+	/**
+	 * Datset filename extension
+	 */
+	const std::string kDatasetFilenameExtension_;
 
 public:
 	/**
@@ -45,7 +50,16 @@ public:
 	/**
 	 * Constructor
 	 */
-	Marker(std::string startingResultsFolder) : startingResultsFolder_(startingResultsFolder) {
+	Marker(std::string startingResultsFolder) :
+		startingResultsFolder_(startingResultsFolder),
+		kDatasetFilenameExtension_("/dataset.txt"){
+		// nothing to do
+	}
+
+	Marker(std::string startingResultsFolder,
+		   std::string datasetFilenameExtension) :
+		startingResultsFolder_(startingResultsFolder),
+		kDatasetFilenameExtension_(datasetFilenameExtension){
 		// nothing to do
 	}
 
@@ -60,19 +74,19 @@ public:
 	 * Checks if dataset already exists in given folder
 	 */
 	bool datasetExists() {
-		std::ifstream file(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, DATASET_FILENAME_EXTENSION).c_str());
+		std::ifstream file(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_).c_str());
 		return (file.good());
 	}
 
 	/**
 	 * Performs the dataset marking
 	 */
-	void markDataset();
+	virtual void markDataset();
 
 	/**
 	 * Performs the dataset marking - ignores images that are already in dataset
 	 */
-	void updateDataset();
+	virtual void updateDataset();
 
 	/**
 	 * shows images and their marks from dataset
