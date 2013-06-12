@@ -42,8 +42,8 @@ void OCRLineMarker::getOcrLinePoints(const cv::Point& seed,
 	}
 	points.push_back(cv::Point(0, up));
 	points.push_back(cv::Point(imageSize.width-1, up));
-	points.push_back(cv::Point(0, lo));
 	points.push_back(cv::Point(imageSize.width-1, lo));
+	points.push_back(cv::Point(0, lo));
 }
 
 void OCRLineMarker::markDataset() {
