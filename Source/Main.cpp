@@ -57,7 +57,7 @@ static void help() {
 		"./MVDatagen -e <existing_dataset_folder> [-g <generated_dataset_folder>]\n"
 		" If -g option is ommited, only marking process will be performed.\n"
 		" Adding -o option will just show images that are in dataset and their marks. No updates will be performed."
-		" If -l option is used OCR line detectot is used. Use -h to set image height percentage (-h30 sets 30% of image height), 20 is default"
+		" If -l option is used OCR line detectot is used. Use -h to set image height percentage (-h30 sets 30%% of image height), 20 is default"
 		"\n"
 		"For the first use, locate the folder with your images and decide where you want your generated images to be placed.\n"
 		"Then use: ./MVDatagen -e <existingImagesFolder> -g <generatedImagesFolder>\n"

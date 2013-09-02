@@ -59,7 +59,7 @@ public:
 	PerspectiveGenerator(const std::string startingResultsFolder, const std::string generatedResultsFolder,
 			const int numSamples, const unsigned int perspectiveVariance) :
 				Generator(startingResultsFolder, generatedResultsFolder, numSamples),
-				perspectiveVariance_(perspectiveVariance_) {
+				perspectiveVariance_(perspectiveVariance) {
 		// nothing to do
 	}
 
