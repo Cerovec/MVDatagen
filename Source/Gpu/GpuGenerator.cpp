@@ -62,7 +62,7 @@ void GpuGenerator::generateVariations() {
 
 void GpuGenerator::generateImages(std::string outFolder) {
 	for(std::vector<mv::ImageData>::iterator it=ds_.dataset_.begin(); it!=ds_.dataset_.end(); ++it) {
-		LOGD("Image %d/%u: %s", imIndex++, ds_.dataset_.size(), it->filename_.c_str());
+//		LOGD("Image %d/%u: %s", imIndex++, ds_.dataset_.size(), it->filename_.c_str());
 		cv::Mat inputImage = cv::imread(IO::appendFilenameToFolderPath(folder_, it->filename_));
 		frameProvider_.setNewFrame(inputImage);
 		// adjust marker positions coordinates to texture coordinate system
