@@ -23,7 +23,7 @@
 
 #include <vector>
 #include <string>
-#include <opencv2/opencv.hpp>
+#include "CommonHeaders.h"
 #include <stdio.h>
 
 namespace mv {
@@ -170,7 +170,7 @@ public:
 
     void display(const std::string& folderName) const {
         for (unsigned int i = 0; i < dataset_.size(); i++) {
-            printf("Number of marks: %lu\n", dataset_[i].points_.size());
+            printf("Number of marks: " JL_SIZE_T_SPECIFIER "\n", dataset_[i].points_.size());
             dataset_[i].display(folderName);
         }
     }
