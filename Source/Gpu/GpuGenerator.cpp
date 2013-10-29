@@ -7,30 +7,60 @@
 
 #include "GpuGenerator.hpp"
 #include "Utils/IO.hpp"
+#include "MatrixModifier.hpp"
+
+#ifdef USE_GPU_DEWARP
 #include "RenderingContext/RenderingContext.hpp"
 #include "RenderingSurface/RenderingSurface.hpp"
-#include "MatrixModifier.hpp"
+#include "CameraFrameProvider.hpp"
+#include "GpuImageFilters/ImageGeneratorFilter.hpp"
+#endif
 
 namespace mv {
 
-GpuGenerator::GpuGenerator(std::string folder, ErrorStatus &status) :
-		context_(gpumv::RenderingContext::getContext(640, 480)),
-		folder_(folder),
-		frameProvider_(context_),
-		genFilter_(context_, status) {
-	if(status==ERROR_STATUS_SUCCESS) {
-		LOGD("Loading dataset...");
-		ds_.deserialize(IO::appendFilenameToFolderPath(folder_,"dataset.txt"));
-	} else {
-		LOGE("There were errors in member initialization");
-	}
+#ifdef USE_GPU_DEWARP
+struct GpuGeneratorImpl {
+    gpumv::RenderingContext *context_;
+    std::string folder_;
+    mv::Dataset ds_;
+    gpumv::CameraFrameProvider frameProvider_;
+    gpumv::ImageGeneratorFilter genFilter_;
+
+    void generateVariations();
+
+    GpuGeneratorImpl(const std::string& folder, ErrorStatus& status) :
+        context_(gpumv::RenderingContext::getContext(640, 480)),
+            folder_(folder),
+            frameProvider_(context_),
+            genFilter_(context_, status) {}
+};
+#endif
+
+GpuGenerator::GpuGenerator(const std::string& folder, ErrorStatus &status) {
+#ifdef USE_GPU_DEWARP
+    impl_ = new GpuGeneratorImpl(folder, status);
+    if(status==ERROR_STATUS_SUCCESS) {
+        LOGD("Loading dataset...");
+        impl_->ds_.deserialize(IO::appendFilenameToFolderPath(impl_->folder_,"dataset.txt"));
+    } else {
+        LOGE("There were errors in member initialization");
+    }
+#else
+    status = ERROR_STATUS_NOT_SUPPORTED;
+    impl_ = NULL;
+#endif
+
 }
 
 GpuGenerator::~GpuGenerator() {
+#ifdef USE_GPU_DEWARP
+    delete impl_;
 	gpumv::RenderingContext::terminateContext();
+#endif
 }
 
-void GpuGenerator::generateVariations() {
+#ifdef USE_GPU_DEWARP
+inline void GpuGeneratorImpl::generateVariations() {
 	// perform this in loop
 	for(float bFact = 0.7; bFact<1.4; bFact+=0.1) { // for loop modifies blue balance factor
 		for(float zDist = 0.f; zDist<2.5f; zDist+=0.5f) { // for loop modifies rectangle's z position
@@ -59,12 +89,14 @@ void GpuGenerator::generateVariations() {
 		}
 	}
 }
+#endif
 
 void GpuGenerator::generateImages(std::string outFolder) {
-	for(std::vector<mv::ImageData>::iterator it=ds_.dataset_.begin(); it!=ds_.dataset_.end(); ++it) {
+#ifdef USE_GPU_DEWARP
+	for(std::vector<mv::ImageData>::iterator it=impl_->ds_.dataset_.begin(); it!=impl_->ds_.dataset_.end(); ++it) {
 //		LOGD("Image %d/%u: %s", imIndex++, ds_.dataset_.size(), it->filename_.c_str());
-		cv::Mat inputImage = cv::imread(IO::appendFilenameToFolderPath(folder_, it->filename_));
-		frameProvider_.setNewFrame(inputImage);
+		cv::Mat inputImage = cv::imread(IO::appendFilenameToFolderPath(impl_->folder_, it->filename_));
+		impl_->frameProvider_.setNewFrame(inputImage);
 		// adjust marker positions coordinates to texture coordinate system
 		cv::Size imSize(inputImage.cols, inputImage.rows);
 		gpumv::Point points[4];
@@ -75,12 +107,13 @@ void GpuGenerator::generateImages(std::string outFolder) {
 			points[i].y = (float)it->points_[i].y/(float)imSize.height;
 		}
 		// render frame
-		genFilter_.setInputTexture(frameProvider_.getFrameTexture());
+		impl_->genFilter_.setInputTexture(impl_->frameProvider_.getFrameTexture());
 		// set background texture
-		genFilter_.setBackgroundTexture(frameProvider_.getFrameTexture());
-		genFilter_.setTexCoordinates(points[0], points[1], points[3], points[2]); // positions of invoice corner points
-		generateVariations();
+		impl_->genFilter_.setBackgroundTexture(impl_->frameProvider_.getFrameTexture());
+		impl_->genFilter_.setTexCoordinates(points[0], points[1], points[3], points[2]); // positions of invoice corner points
+		impl_->generateVariations();
 	}
+#endif
 }
 
 } /* namespace mv */
