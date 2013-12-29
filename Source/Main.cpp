@@ -109,7 +109,7 @@ int main(int argc, char* argv[]){
 	bool showOnly = false;
 	bool useGPUGenerator = false;
 
-	while ((argument = getopt_long(
+    while ((argument = (char)getopt_long(
 			argc, argv, "e:g:l:h:n:v:p:s:b:r:f:o:u:", options, &optionIndex)) > -1) {
 		switch (argument) {
 			case 'e':

@@ -29,7 +29,7 @@ namespace mv {
 inline static void zoomImage(const cv::Mat& input, cv::Mat& output, unsigned int widthIncrease) {
 	if (input.cols + widthIncrease > 0) {
 		int newWidth = input.cols + widthIncrease;
-		int newHeight = newWidth / (double) input.cols * input.rows;
+        int newHeight = (int)(newWidth / (double) input.cols * input.rows);
 		cv::resize(input, output, cv::Size(newWidth, newHeight), 0, 0, cv::INTER_LANCZOS4);
 	} else {
 		output = input.clone();
@@ -53,7 +53,7 @@ inline static void perspectiveTranform(const std::vector<cv::Point>& originalPoi
 				transformMatrix.at<float>(1, 2);
 
 		if (fabs(xdt) > 0.0001) {
-			transformedPoints.push_back(cv::Point(xet / xdt, yet / xdt));
+            transformedPoints.push_back(cv::Point((int)(xet / xdt), (int)(yet / xdt)));
 		} else {
 			transformedPoints.push_back(cv::Point(0, 0));
 		}

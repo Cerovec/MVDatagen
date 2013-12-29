@@ -81,7 +81,7 @@ public:
 	static std::string appendFilenameToFolderPath(const std::string& path, const std::string& filename) {
 		// find filename
 		std::string res = path;
-		unsigned int len = path.length();
+        size_t len = path.length();
 		if (path[len - 1] != '/' && filename[0] != '/') {
 			res.append("/");
 		}

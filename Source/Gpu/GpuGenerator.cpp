@@ -62,11 +62,11 @@ GpuGenerator::~GpuGenerator() {
 #ifdef USE_GPU_DEWARP
 inline void GpuGeneratorImpl::generateVariations() {
 	// perform this in loop
-	for(float bFact = 0.7; bFact<1.4; bFact+=0.1) { // for loop modifies blue balance factor
+    for(float bFact = 0.7f; bFact<1.4f; bFact+=0.1f) { // for loop modifies blue balance factor
 		for(float zDist = 0.f; zDist<2.5f; zDist+=0.5f) { // for loop modifies rectangle's z position
 			for(float yRot = 0.f; yRot<1.0; yRot+=0.2f) { // for loop modifies rotation around y axis
 				float awbFactors[3] = {bFact, 1.f, 1.f}; // White balance modification factors in BGR order
-				cv::Mat transform = gpumv::MatrixModifier().rotateAroundX(0.3*yRot).rotateAroundZ(0.3*zDist).
+                cv::Mat transform = gpumv::MatrixModifier().rotateAroundX(0.3f*yRot).rotateAroundZ(0.3f*zDist).
 						rotateAroundY(yRot).translate(0,0,zDist).getTransformMatrix();
 				// perform image modification
 				genFilter_.setAwbFactors(awbFactors);
