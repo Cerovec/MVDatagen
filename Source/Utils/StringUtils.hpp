@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <functional>
 
 namespace mv {
 
@@ -42,7 +43,7 @@ inline static void split(const std::string& s, char delimiter, std::vector<std::
  * Trim string from left
  */
 inline static std::string &trimLeft(std::string &s) {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(isspace))));
 	return s;
 }
 
@@ -50,7 +51,7 @@ inline static std::string &trimLeft(std::string &s) {
  * Trim string from right
  */
 inline static std::string &trimRight(std::string &s) {
-	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(isspace))).base(), s.end());
 	return s;
 }
 
