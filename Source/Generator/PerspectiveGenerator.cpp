@@ -50,10 +50,10 @@ void PerspectiveGenerator::generateSample(const ImageData& originalSample,
 
 		transformMatrix.at<float>(0,0) = RNG.uniform( 0.8f, 1.2f);
 		transformMatrix.at<float>(0,1) = RNG.uniform(-0.1f, 0.1f);
-		transformMatrix.at<float>(0,2) = RNG.uniform(-0.1f, 0.1f) * originalImage.cols;
+        transformMatrix.at<float>(0,2) = RNG.uniform(-0.1f, 0.1f) * (float)originalImage.cols;
 		transformMatrix.at<float>(1,0) = RNG.uniform(-0.1f, 0.1f);
 		transformMatrix.at<float>(1,1) = RNG.uniform( 0.8f, 1.2f);
-		transformMatrix.at<float>(1,2) = RNG.uniform(-0.1f, 0.1f) * originalImage.rows;
+        transformMatrix.at<float>(1,2) = RNG.uniform(-0.1f, 0.1f) * (float)originalImage.rows;
 		transformMatrix.at<float>(2,0) = RNG.uniform( -1e-4f, 1e-4f);
 		transformMatrix.at<float>(2,1) = RNG.uniform( -1e-4f, 1e-4f);
 		transformMatrix.at<float>(2,2) = RNG.uniform( 0.8f, 1.2f);

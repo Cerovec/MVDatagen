@@ -18,7 +18,7 @@ namespace mv {
 OCRLineMarker::OCRLineMarker(std::string startingResultsFolder,
 							 int imagePercentage) :
 		Marker(startingResultsFolder, "/ocrDataset.txt"){
-	imagePercentage_ = std::min(std::max(imagePercentage/(float)100, 0.1f), 0.9f);
+    imagePercentage_ = std::min(std::max((float)imagePercentage/(float)100, 0.1f), 0.9f);
 }
 
 OCRLineMarker::~OCRLineMarker() {
@@ -28,7 +28,7 @@ OCRLineMarker::~OCRLineMarker() {
 void OCRLineMarker::getOcrLinePoints(const cv::Point& seed,
 									 const cv::Size& imageSize,
 									 std::vector<cv::Point>& points){
-    int height = (int)(imageSize.height*imagePercentage_);
+    int height = (int)((float)imageSize.height*imagePercentage_);
 	int up = seed.y - (height >> 1);
 	int lo = seed.y + (height >> 1);
 	if (up < 0){
