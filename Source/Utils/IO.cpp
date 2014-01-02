@@ -11,7 +11,9 @@
 #include "Geometry.hpp"
 #include <string>
 #include <stdio.h>
+#ifndef _WIN32
 #include <dirent.h>
+#endif
 
 #define ENABLE_IMSHOW
 
@@ -128,6 +130,7 @@ void IO::handleUserInput(const cv::Mat& image, const char* title, std::vector<cv
 }
 
 void IO::findImageFilenames(std::string folderName, std::vector<std::string>& imageFilenames) {
+#ifndef _WIN32
 	DIR *d;
 	struct dirent* dirent;
 
@@ -144,6 +147,7 @@ void IO::findImageFilenames(std::string folderName, std::vector<std::string>& im
 
 		closedir(d);
 	}
+#endif
 }
 
 } /* namespace photopay */

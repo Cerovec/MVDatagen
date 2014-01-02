@@ -7,7 +7,7 @@ local_dependencies(GPUMVToolset MVToolset CoreUtils)
 set(EXCLUDES "")
 
 if(MSVC)
-	list(APPEND EXCLUDES "Main.cpp" "IO")
+	list(APPEND EXCLUDES "Main.cpp")
 endif()
 
 # Obtain all source files
