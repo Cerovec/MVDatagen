@@ -64,7 +64,9 @@ void OCRLineMarker::markDataset() {
 
 		IO::displayImage(image, windowName.c_str());
 		IO::handleUserInput(image, windowName.c_str(), points, marks);
+#ifdef IMSHOW
 		cv::destroyWindow(windowName.c_str());
+#endif
 
 		for (int j = 0; j < (int)points.size(); ++ j){
 			ImageData data(IO::getFilenameFromPath(filenames[i]));
@@ -110,7 +112,9 @@ void OCRLineMarker::updateDataset() {
 
 			IO::displayImage(image, windowName.c_str());
 			IO::handleUserInput(image, windowName.c_str(), points, marks);
+#ifdef IMSHOW
 			cv::destroyWindow(windowName.c_str());
+#endif
 
 			for (int j = 0; j < (int)points.size(); ++ j){
 				ImageData data(filename);

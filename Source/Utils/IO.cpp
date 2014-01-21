@@ -15,8 +15,6 @@
 #include <dirent.h>
 #endif
 
-#define ENABLE_IMSHOW
-
 namespace mv {
 
 void IO::saveImageToFile(const cv::Mat& image, const char* filename) {
@@ -32,7 +30,7 @@ void IO::loadImageFromFile(cv::Mat& image, const char* filename) {
 
 void IO::displayImage(const cv::Mat& image, const char* title) {
 
-#ifdef ENABLE_IMSHOW
+#ifdef IMSHOW
 	cv::namedWindow(title);
 
 	cv::imshow(title, image);
@@ -91,7 +89,8 @@ void onMouseClick(int event, int x, int y, int flags, void* ptr) {
 
 
 void IO::handleUserInput(const cv::Mat& image, const char* title, std::vector<cv::Point>& points, std::vector<std::string>& marks) {
-	int key;
+#ifdef IMSHOW
+    int key;
 	cv::Mat currentImage = image.clone();
 
 	mv::MouseCallback callback(&currentImage, title, points);
@@ -127,6 +126,7 @@ void IO::handleUserInput(const cv::Mat& image, const char* title, std::vector<cv
 	}
 
 	points = callback.clickedPoints_;
+#endif
 }
 
 void IO::findImageFilenames(std::string folderName, std::vector<std::string>& imageFilenames) {

@@ -37,8 +37,10 @@ void ImageData::display(const std::string& folderName) const {
 	}
 
 	IO::displayImage(image, "Dataset");
+#ifdef IMSHOW
 	cv::waitKey(0);
 	cv::destroyWindow("Dataset");
+#endif
 }
 
 void ImageData::serialize(std::ostream& stream) {

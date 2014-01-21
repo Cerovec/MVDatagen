@@ -47,7 +47,9 @@ void Marker::markDataset() {
 
 		IO::displayImage(image, windowName.c_str());
 		IO::handleUserInput(image, windowName.c_str(), points, marks);
+#ifdef IMSHOW
 		cv::destroyWindow(windowName.c_str());
+#endif
 
 		ImageData data(IO::getFilenameFromPath(filenames[i]));
 		data.points_ = points;
@@ -91,7 +93,9 @@ void Marker::updateDataset() {
 
 			IO::displayImage(image, windowName.c_str());
 			IO::handleUserInput(image, windowName.c_str(), points, marks);
+#ifdef IMSHOW
 			cv::destroyWindow(windowName.c_str());
+#endif
 
 			ImageData data(filename);
 			data.points_ = points;
