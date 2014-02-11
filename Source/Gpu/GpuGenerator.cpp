@@ -81,10 +81,11 @@ inline void GpuGeneratorImpl::generateVariations() {
 				// download rendered frame from GPU
 				cv::Mat output;
 				context_->getRenderingSurface()->readPixels(output, status);
-
+#ifdef IMSHOW
 				// either save it to file or show it
 				cv::imshow("rendered", output);
 				cv::waitKey(0);
+#endif
 			}
 		}
 	}
