@@ -4,7 +4,8 @@ cmake_minimum_required(VERSION 2.8)
 # Additional depencies
 local_dependencies(GPUMVToolset MVToolset CoreUtils)
 
-set(EXCLUDES "")
+# GPU generators are not up-to-date
+set(EXCLUDES "Gpu")
 
 if(MSVC)
 	list(APPEND EXCLUDES "Main.cpp")

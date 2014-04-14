@@ -30,7 +30,7 @@
 #include "Generator/PerspectiveGenerator.hpp"
 #include "Generator/CopyGenerator.hpp"
 #include "Generator/FlipGenerator.hpp"
-#include "Gpu/GpuGenerator.hpp"
+//#include "Gpu/GpuGenerator.hpp"
 #include "Matlab.h"
 
 static struct option options[] = {
@@ -46,7 +46,7 @@ static struct option options[] = {
     {"blur-radius", required_argument, 0, 'r'},
     {"flip", required_argument, 0, 'f'},
     {"show-only", no_argument, 0, 'o'},
-    {"use-gpu", no_argument, 0, 'u'},
+//    {"use-gpu", no_argument, 0, 'u'},
     {0, 0,  0, 0}
 };
 
@@ -107,7 +107,7 @@ int main(int argc, char* argv[]){
 
 	bool flipNum = 1;
 	bool showOnly = false;
-	bool useGPUGenerator = false;
+//	bool useGPUGenerator = false;
 
     while ((argument = (char)getopt_long(
 			argc, argv, "e:g:l:h:n:v:p:s:b:r:f:o:u:", options, &optionIndex)) > -1) {
@@ -148,9 +148,9 @@ int main(int argc, char* argv[]){
 			case 'o':
 				showOnly = true;
 				break;
-			case 'u':
-				useGPUGenerator = true;
-				break;
+//			case 'u':
+//				useGPUGenerator = true;
+//				break;
 			default:
 				help();
 				break;
@@ -175,16 +175,16 @@ int main(int argc, char* argv[]){
 		}
 	}
 
-	if(useGPUGenerator) {
-		ErrorStatus status;
-		mv::GpuGenerator generator(existingDatasetFolder, status);
-		if(status!=ERROR_STATUS_SUCCESS) {
-			LOGE("Failed to initialize gpu generator");
-			return 0;
-		}
-		generator.generateImages("mic");
-		return 0;
-	}
+//	if(useGPUGenerator) {
+//		ErrorStatus status;
+//		mv::GpuGenerator generator(existingDatasetFolder, status);
+//		if(status!=ERROR_STATUS_SUCCESS) {
+//			LOGE("Failed to initialize gpu generator");
+//			return 0;
+//		}
+//		generator.generateImages("mic");
+//		return 0;
+//	}
 
 	/** Mark the original images if dataset doesn't exist */
 	mv::Marker* marker = NULL;
