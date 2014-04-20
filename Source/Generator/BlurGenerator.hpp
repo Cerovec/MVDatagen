@@ -21,6 +21,7 @@
 #ifndef BLURGENERATOR_H_
 #define BLURGENERATOR_H_
 
+#include "CommonHeaders.h"
 #include "Generator/Generator.hpp"
 #include "Utils/Utils.hpp"
 

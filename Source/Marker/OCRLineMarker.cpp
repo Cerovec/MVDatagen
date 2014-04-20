@@ -9,9 +9,6 @@
 #include "Dataset.hpp"
 #include "Geometry.hpp"
 #include "Marker.hpp"
-#include <iostream>
-#include <opencv2/opencv.hpp>
-#include <set>
 
 namespace mv {
 

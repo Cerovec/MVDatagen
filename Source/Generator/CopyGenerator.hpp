@@ -21,6 +21,7 @@
 #ifndef COPYGENERATOR_H_
 #define COPYGENERATOR_H_
 
+#include "CommonHeaders.h"
 #include "Generator.hpp"
 #include "Utils/Utils.hpp"
 

@@ -1,3 +1,4 @@
+#include "CommonHeaders.h"
 /**
  * \file
  *
@@ -21,8 +22,6 @@
 #ifndef GEOMETRY_H_
 #define GEOMETRY_H_
 
-#include <opencv2/opencv.hpp>
-#include <vector>
 
 namespace mv {
 

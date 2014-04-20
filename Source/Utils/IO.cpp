@@ -9,10 +9,8 @@
 
 #include "IO.hpp"
 #include "Geometry.hpp"
-#include <string>
 #include <stdio.h>
 #ifndef _WIN32
-#include <dirent.h>
 #endif
 
 namespace mv {

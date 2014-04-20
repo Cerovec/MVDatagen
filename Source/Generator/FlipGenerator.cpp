@@ -19,7 +19,6 @@
  */
 
 #include "FlipGenerator.hpp"
-#include <opencv2/opencv.hpp>
 
 namespace mv {
 

@@ -21,8 +21,6 @@
 #ifndef DATASET_H_
 #define DATASET_H_
 
-#include <vector>
-#include <string>
 #include "CommonHeaders.h"
 #include <stdio.h>
 

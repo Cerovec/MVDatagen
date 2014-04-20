@@ -21,8 +21,7 @@
 #ifndef MARKER_H_
 #define MARKER_H_
 
-#include <iostream>
-#include <fstream>
+#include "CommonHeaders.h"
 #include "Utils/IO.hpp"
 #include "Counted.hpp"
 

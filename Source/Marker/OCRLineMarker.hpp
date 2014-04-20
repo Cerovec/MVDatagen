@@ -8,6 +8,7 @@
 #ifndef OCRLINEMARKER_HPP_
 #define OCRLINEMARKER_HPP_
 
+#include "CommonHeaders.h"
 #include "Marker.hpp"
 
 namespace mv {

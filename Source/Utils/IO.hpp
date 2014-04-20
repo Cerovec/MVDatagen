@@ -1,3 +1,4 @@
+#include "CommonHeaders.h"
 /**
  * \file
  *
@@ -11,10 +12,6 @@
 #ifndef IO_H_
 #define IO_H_
 
-#include <vector>
-#include <opencv2/opencv.hpp>
-#include <string>
-#include <vector>
 
 namespace cv {
 	class Mat;

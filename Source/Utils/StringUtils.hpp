@@ -1,3 +1,4 @@
+#include "CommonHeaders.h"
 /**
  * \file
  *
@@ -20,10 +21,6 @@
 #ifndef STRINGUTILS_H_
 #define STRINGUTILS_H_
 
-#include <vector>
-#include <string>
-#include <sstream>
-#include <functional>
 
 namespace mv {
 

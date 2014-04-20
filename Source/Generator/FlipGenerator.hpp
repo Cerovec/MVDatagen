@@ -21,6 +21,7 @@
 #ifndef FLIPGENERATOR_H_
 #define FLIPGENERATOR_H_
 
+#include "CommonHeaders.h"
 #include "Generator.hpp"
 
 namespace mv {

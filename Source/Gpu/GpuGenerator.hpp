@@ -8,9 +8,8 @@
 #ifndef GPUGENERATOR_HPP_
 #define GPUGENERATOR_HPP_
 
-#include "Dataset.hpp"
 #include "CommonHeaders.h"
-#include <string>
+#include "Dataset.hpp"
 
 namespace gpumv {
 	class RenderingContext;

@@ -21,9 +21,8 @@
 #ifndef GENERATOR_H_
 #define GENERATOR_H_
 
+#include "CommonHeaders.h"
 #include <stdlib.h>
-#include <string>
-#include <opencv2/opencv.hpp>
 #include "Utils/Utils.hpp"
 #include "Marker/Marker.hpp"
 #include "Dataset.hpp"

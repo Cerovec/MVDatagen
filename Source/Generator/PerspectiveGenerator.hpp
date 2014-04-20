@@ -20,9 +20,9 @@
 #ifndef PERSPECTIVEGENERATOR_H_
 #define PERSPECTIVEGENERATOR_H_
 
+#include "CommonHeaders.h"
 #include "Generator/Generator.hpp"
 #include "Utils/Utils.hpp"
-#include <opencv2/opencv.hpp>
 
 namespace mv {
 
