@@ -5,8 +5,7 @@
  *      Author: boris
  */
 
-#ifndef OCRLINEMARKER_HPP_
-#define OCRLINEMARKER_HPP_
+#pragma once
 
 #include "CommonHeaders.h"
 #include "Marker.hpp"
@@ -49,4 +48,3 @@ public:
 };
 
 } /* namespace barcode */
-#endif /* OCRLINEMARKER_HPP_ */

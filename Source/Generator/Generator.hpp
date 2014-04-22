@@ -18,8 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef GENERATOR_H_
-#define GENERATOR_H_
+#pragma once
 
 #include "CommonHeaders.h"
 #include <stdlib.h>
@@ -148,4 +147,3 @@ public:
 };
 
 } /* namespace mv */
-#endif /* GENERATOR_H_ */

@@ -17,8 +17,7 @@
  * THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
-#ifndef PERSPECTIVEGENERATOR_H_
-#define PERSPECTIVEGENERATOR_H_
+#pragma once
 
 #include "CommonHeaders.h"
 #include "Generator/Generator.hpp"
@@ -70,4 +69,3 @@ public:
 
 } /* namespace mv */
 
-#endif /* PERSPECTIVEGENERATOR_H_ */

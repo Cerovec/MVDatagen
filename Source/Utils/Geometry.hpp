@@ -19,8 +19,7 @@
  * THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
-#ifndef GEOMETRY_H_
-#define GEOMETRY_H_
+#pragma once
 
 
 namespace mv {
@@ -73,4 +72,3 @@ inline static bool arePointsInside(const std::vector<cv::Point>& points, const c
 
 } // namespace
 
-#endif /* GEOMETRY_H_ */

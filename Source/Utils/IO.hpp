@@ -9,8 +9,7 @@
  *
  */
 
-#ifndef IO_H_
-#define IO_H_
+#pragma once
 
 
 namespace cv {
@@ -89,4 +88,3 @@ public:
 }
 
  /* namespace photopay */
-#endif /* IMAGEIO_H_ */

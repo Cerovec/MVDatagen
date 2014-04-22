@@ -5,8 +5,7 @@
  *      Author: dodo
  */
 
-#ifndef MATRIXMODIFIER_HPP_
-#define MATRIXMODIFIER_HPP_
+#pragma once
 
 #include "CommonHeaders.h"
 
@@ -30,4 +29,3 @@ private:
 };
 
 } /* namespace gpumv */
-#endif /* MATRIXMODIFIER_HPP_ */

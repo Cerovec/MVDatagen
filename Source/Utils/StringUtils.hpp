@@ -18,8 +18,7 @@
  * THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
-#ifndef STRINGUTILS_H_
-#define STRINGUTILS_H_
+#pragma once
 
 
 namespace mv {
@@ -61,4 +60,3 @@ inline static std::string &trim(std::string &s) {
 
 }
 
-#endif /* STRINGUTILS_H_ */

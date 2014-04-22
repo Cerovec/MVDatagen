@@ -18,8 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef NOISEGENERATOR_H_
-#define NOISEGENERATOR_H_
+#pragma once
 
 #include "CommonHeaders.h"
 #include "Generator/Generator.hpp"
@@ -71,4 +70,3 @@ public:
 
 } /* namespace mv */
 
-#endif /* NOISEGENERATOR_H_ */

@@ -18,8 +18,7 @@
  * THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
-#ifndef UTILS_H_
-#define UTILS_H_
+#pragma once
 
 // A macro to disallow the copy constructor and operator= functions
 // This should be used in the private: declarations for a class
@@ -27,4 +26,3 @@
   TypeName(const TypeName&);               \
   void operator=(const TypeName&)
 
-#endif /* UTILS_H_ */

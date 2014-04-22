@@ -18,8 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef DATASET_H_
-#define DATASET_H_
+#pragma once
 
 #include "CommonHeaders.h"
 #include <stdio.h>
@@ -211,4 +210,3 @@ private:
 };
 
 } /* namespace mv */
-#endif /* DATASET_H_ */

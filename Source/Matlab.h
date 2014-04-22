@@ -6,9 +6,7 @@
  *      Author: boris
  */
 
-#ifndef MATLAB_H_
-#define MATLAB_H_
+#pragma once
 
 int main(int argc, char* argv[]);
 
-#endif /* MATLAB_H_ */

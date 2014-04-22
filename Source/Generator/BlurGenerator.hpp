@@ -18,8 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef BLURGENERATOR_H_
-#define BLURGENERATOR_H_
+#pragma once
 
 #include "CommonHeaders.h"
 #include "Generator/Generator.hpp"
@@ -70,4 +69,3 @@ public:
 };
 
 } /* namespace mv */
-#endif /* BLURGENERATOR_H_ */

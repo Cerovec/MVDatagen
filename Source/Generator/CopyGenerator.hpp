@@ -18,8 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef COPYGENERATOR_H_
-#define COPYGENERATOR_H_
+#pragma once
 
 #include "CommonHeaders.h"
 #include "Generator.hpp"
@@ -55,4 +54,3 @@ public:
 };
 
 } /* namespace mv */
-#endif /* COPYGENERATOR_H_ */

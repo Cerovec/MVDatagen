@@ -5,8 +5,7 @@
  *      Author: dodo
  */
 
-#ifndef GPUGENERATOR_HPP_
-#define GPUGENERATOR_HPP_
+#pragma once
 
 #include "CommonHeaders.h"
 #include "Dataset.hpp"
@@ -30,4 +29,3 @@ private:
 };
 
 } /* namespace mv */
-#endif /* GPUGENERATOR_HPP_ */

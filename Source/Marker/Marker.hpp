@@ -18,8 +18,7 @@
  * REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
  */
 
-#ifndef MARKER_H_
-#define MARKER_H_
+#pragma once
 
 #include "CommonHeaders.h"
 #include "Utils/IO.hpp"
@@ -101,4 +100,3 @@ public:
 };
 
 } /* namespace mv */
-#endif /* MARKER_H_ */
