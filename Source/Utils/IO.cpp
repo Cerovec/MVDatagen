@@ -76,7 +76,7 @@ public:
 };
 
 void onMouseClick(int event, int x, int y, int flags, void* ptr) {
-    if (event != CV_EVENT_LBUTTONDOWN)
+    if (event != cv::EVENT_LBUTTONDOWN)
         return;
 
     cv::Point seed = cv::Point(x, y);
