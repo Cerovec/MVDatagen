@@ -22,6 +22,7 @@
 #include "Utils/StringUtils.hpp"
 #include "Utils/IO.hpp"
 #include <stdio.h>
+#include <fstream>
 
 namespace mv {
 

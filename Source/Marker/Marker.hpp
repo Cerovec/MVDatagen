@@ -23,6 +23,7 @@
 #include "CommonHeaders.h"
 #include "Utils/IO.hpp"
 #include "Counted.hpp"
+#include <fstream>
 
 namespace mv {
 
@@ -72,7 +73,7 @@ public:
 	 * Checks if dataset already exists in given folder
 	 */
 	bool datasetExists() {
-		std::ifstream file(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_).c_str());
+        std::ifstream file(mv::IO::appendFilenameToFolderPath(startingResultsFolder_, kDatasetFilenameExtension_).c_str());
 		return (file.good());
 	}
 
